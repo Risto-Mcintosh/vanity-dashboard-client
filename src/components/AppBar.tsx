@@ -10,7 +10,7 @@ const ApplicationBar = ({ location }: RouteComponentProps) => {
         <Typography variant="h5">
           {pageName === '/'
             ? 'Dashboard'
-            : pageName.substring(1).replace(/^\w/, c => c.toUpperCase())}
+            : pageName.substring(1).replace(/^\w/, (c) => c.toUpperCase())}
         </Typography>
       </Toolbar>
     </AppBar>
