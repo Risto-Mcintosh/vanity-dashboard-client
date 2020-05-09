@@ -17,31 +17,38 @@ export enum VanityColor {
   Pink = 'pink',
 }
 
-export interface ICustomer {
+export type Customer = {
   id: number;
   name: string;
   phone: string;
   email: string;
-}
+};
 
-export interface IVanity {
+type VanityComponent = {
+  id?: number;
+  size: string;
+  price: number;
+};
+
+export type Vanity = {
   color: string;
-  mirrorSize: Sizes;
-  tableSize: Sizes;
-}
+  mirror: VanityComponent;
+  table: VanityComponent;
+  baseMaterial: VanityComponent;
+};
 
-export interface IMeta {
+export type Meta = {
   paidOn?: Date;
   dueOn?: Date;
   completedOn?: Date;
-}
+};
 
-export interface IOrder {
+export type Order = {
   id: number;
-  customer: ICustomer;
-  vanity: IVanity;
+  customer: Customer;
+  vanity: Vanity;
   total: number;
   orderStatus: string;
   orderedOn: Date;
-  meta: IMeta;
-}
+  meta: Meta;
+};
