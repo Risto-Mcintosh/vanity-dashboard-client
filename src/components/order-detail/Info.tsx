@@ -10,20 +10,25 @@ import {
 } from '@material-ui/core';
 import { Vanity } from '../../types';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import LineItem from './lineItem';
+import LineItem from './LineItem';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
-    padding: '15px 0',
+    padding: `${theme.spacing(2)}px 0`,
   },
-  orderInfo: {
-    display: 'flex',
-    justifyContent: 'space-between',
+  paidLabel: {
+    marginLeft: theme.spacing(1),
   },
   orderTotal: {
     fontSize: '1.3em',
   },
-});
+  space: {
+    padding: `${theme.spacing(1.5)}px 0`,
+  },
+  button: {
+    marginLeft: theme.spacing(1),
+  },
+}));
 
 type props = {
   vanity: Vanity;
@@ -34,16 +39,27 @@ export function OrderInfo({ vanity, total }: props) {
   const classes = useStyles();
   return (
     <Card className={classes.root}>
-      <Box px={2} display="flex">
+      <Box px={2} display="flex" alignItems="center">
         <HighlightOffIcon color="error" />
-        <Typography variant="h6">Not Paid</Typography>
+        <Typography className={classes.paidLabel} variant="h6">
+          Not Paid
+        </Typography>
       </Box>
-      <Grid container justify="space-between">
+      <Grid container justify="space-between" className={classes.space}>
         <Grid item xs={9}>
-          <LineItem size={vanity.color} />
-          <LineItem size={vanity.mirror.size} price={vanity.mirror.price} />
-          <LineItem size={vanity.table.size} price={vanity.table.price} />
+          <LineItem name="Color" size={vanity.color} />
           <LineItem
+            name="Mirror"
+            size={vanity.mirror.size}
+            price={vanity.mirror.price}
+          />
+          <LineItem
+            name="Table"
+            size={vanity.table.size}
+            price={vanity.table.price}
+          />
+          <LineItem
+            name="Base Material"
             size={vanity.baseMaterial.size}
             price={vanity.baseMaterial.price}
           />
@@ -57,8 +73,11 @@ export function OrderInfo({ vanity, total }: props) {
         </Grid>
       </Grid>
       <Divider />
-      <Box px={2} mt={1} display="flex" justifyContent="flex-end">
-        <Button color="primary" variant="contained">
+      <Box p={2} pb={0} display="flex" justifyContent="flex-end">
+        <Button color="default" variant="contained">
+          Send Invoice
+        </Button>
+        <Button color="primary" variant="contained" className={classes.button}>
           Mark As Paid
         </Button>
       </Box>

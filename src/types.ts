@@ -1,21 +1,8 @@
-export enum Sizes {
-  Small = 'small',
-  Medium = 'medium',
-  Large = 'large',
-}
+export type Sizes = 'Small' | 'Medium' | 'Large';
 
-export enum OrderStatus {
-  New = 'new',
-  Pending = 'pending',
-  Paid = 'paid',
-  Complete = 'complete',
-}
+export type OrderStatus = 'New' | 'Pending' | 'Paid' | 'Complete';
 
-export enum VanityColor {
-  White = 'white',
-  Black = 'black',
-  Pink = 'pink',
-}
+export type VanityColor = 'White' | 'Black' | 'Pink';
 
 export type Customer = {
   id: number;
@@ -26,12 +13,12 @@ export type Customer = {
 
 type VanityComponent = {
   id?: number;
-  size: string;
+  size: Sizes;
   price: number;
 };
 
 export type Vanity = {
-  color: string;
+  color: VanityColor;
   mirror: VanityComponent;
   table: VanityComponent;
   baseMaterial: VanityComponent;
@@ -48,7 +35,7 @@ export type Order = {
   customer: Customer;
   vanity: Vanity;
   total: number;
-  orderStatus: string;
+  orderStatus: OrderStatus;
   orderedOn: Date;
   meta: Meta;
 };
