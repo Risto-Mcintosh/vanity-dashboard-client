@@ -42,7 +42,11 @@ function Status({ orderStatus, orderMetaData }: props) {
         </Typography>
       </Box>
       <Box display="flex" justifyContent="center" px={2} py={3}>
-        <Button variant="contained" disabled>
+        <Button
+          data-testid="setDueDate"
+          variant="contained"
+          disabled={orderStatus === 'New' ? true : false}
+        >
           Set Due Date
         </Button>
       </Box>

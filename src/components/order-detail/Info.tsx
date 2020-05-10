@@ -8,7 +8,7 @@ import {
   Box,
   Divider,
 } from '@material-ui/core';
-import { Vanity } from '../../types';
+import { Vanity, OrderStatus } from '../../types';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import LineItem from './LineItem';
 
@@ -33,9 +33,10 @@ const useStyles = makeStyles((theme) => ({
 type props = {
   vanity: Vanity;
   total: number;
+  handleMarkAsPaid: React.Dispatch<React.SetStateAction<OrderStatus>>;
 };
 
-export function OrderInfo({ vanity, total }: props) {
+function OrderInfo({ vanity, total, handleMarkAsPaid }: props) {
   const classes = useStyles();
   return (
     <Card className={classes.root}>
@@ -77,10 +78,17 @@ export function OrderInfo({ vanity, total }: props) {
         <Button color="default" variant="contained">
           Send Invoice
         </Button>
-        <Button color="primary" variant="contained" className={classes.button}>
+        <Button
+          color="secondary"
+          variant="contained"
+          className={classes.button}
+          onClick={() => handleMarkAsPaid('Pending')}
+        >
           Mark As Paid
         </Button>
       </Box>
     </Card>
   );
 }
+
+export default OrderInfo;
