@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 type props = {
-  orderStatus: string;
+  orderStatus: string | undefined;
   orderMetaData: Meta;
 };
 
@@ -37,7 +37,11 @@ function Status({ orderStatus, orderMetaData }: props) {
     <Card className={classes.root}>
       <Box px={2} display="flex" alignItems="center">
         <FiberNewIcon color="secondary" />
-        <Typography className={classes.paidLabel} variant="h6">
+        <Typography
+          data-testid="orderStatus"
+          className={classes.paidLabel}
+          variant="h6"
+        >
           {`Order Status - ${orderStatus}`}
         </Typography>
       </Box>
