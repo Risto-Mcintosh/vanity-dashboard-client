@@ -39,7 +39,7 @@ const App: React.FC = () => {
       <div className={classes.root}>
         <Router>
           <CssBaseline />
-          {/* <Nav /> */}
+          <Nav />
           <AppBar />
           <main className={classes.content}>
             <div className={classes.appBarSpacer} />

@@ -4,7 +4,7 @@ import OrdersTable from '../../Components/order-table/OrderTable';
 function Orders() {
   return (
     <div>
-      <OrdersTable />
+      <OrdersTable orders={[]} />
     </div>
   );
 }

@@ -15,13 +15,14 @@ const daysOfTheWeek: string[] = [
   'Thursday',
   'Friday',
   'Saturday',
-  'Sunday'
+  'Sunday',
 ];
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
-    padding: theme.spacing(2)
-  }
+    padding: theme.spacing(2),
+    marginBottom: theme.spacing(4),
+  },
 }));
 
 export default function WeeklyOrders() {
@@ -34,7 +35,7 @@ export default function WeeklyOrders() {
       <Table size="small">
         <TableHead>
           <TableRow>
-            {daysOfTheWeek.map(day => (
+            {daysOfTheWeek.map((day) => (
               <TableCell align="center">{day}</TableCell>
             ))}
           </TableRow>

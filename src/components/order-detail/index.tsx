@@ -11,7 +11,7 @@ export default function OrderDetail() {
   const { orderId } = useParams<{ orderId: string }>();
   const { order, error } = useOrder(orderId);
   const [orderStatus, updateStatus] = React.useState(order.orderStatus);
-  const [mutate, { status }] = useUpdateOrderStatus();
+  // const [mutate, { status }] = useUpdateOrderStatus();
 
   //function handleOrderUpdate(update: { orderStatus: TypeOrderStatus }) {
   //   const newOrder = { ...order, ...update };

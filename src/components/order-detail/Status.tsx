@@ -7,8 +7,10 @@ import {
   Box,
   Divider,
 } from '@material-ui/core';
-import { Meta } from '../../types';
+import { Meta, OrderStatus } from '../../types';
 import FiberNewIcon from '@material-ui/icons/FiberNew';
+import BuildIcon from '@material-ui/icons/Build';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,16 +29,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 type props = {
-  orderStatus: string | undefined;
+  orderStatus: OrderStatus;
   orderMetaData: Meta;
 };
 
 function Status({ orderStatus, orderMetaData }: props) {
   const classes = useStyles();
+  const isOrderNew = orderStatus === 'New';
+  const isOrderPending = orderStatus === 'Pending';
+  const isOrderComplete = orderStatus === 'Complete';
   return (
     <Card className={classes.root}>
       <Box px={2} display="flex" alignItems="center">
-        <FiberNewIcon color="secondary" />
+        {isOrderNew && <FiberNewIcon color="secondary" />}
+        {isOrderPending && <BuildIcon color="secondary" />}
+        {isOrderComplete && <CheckCircleOutlineIcon color="secondary" />}
         <Typography
           data-testid="orderStatus"
           className={classes.paidLabel}

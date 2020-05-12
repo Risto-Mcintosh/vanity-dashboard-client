@@ -10,12 +10,16 @@ import {
 } from '@material-ui/core';
 import { Order, OrderStatus } from '../../types';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import LineItem from './LineItem';
 import { useUpdateOrderStatus } from '../../utils/orders';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: `${theme.spacing(2)}px 0`,
+  },
+  success: {
+    color: theme.palette.success.main,
   },
   paidLabel: {
     marginLeft: theme.spacing(1),
@@ -40,13 +44,23 @@ function OrderInfo({ order, updateStatus }: props) {
   const [mutate] = useUpdateOrderStatus();
   const classes = useStyles();
   const { vanity, total } = order;
+  const isNewOrder = order.orderStatus === 'New';
   return (
     <Card className={classes.root}>
-      <Box px={2} display="flex" alignItems="center">
-        <HighlightOffIcon color="error" />
-        <Typography className={classes.paidLabel} variant="h6">
-          Not Paid
-        </Typography>
+      <Box px={2} display="flex" justifyContent="space-between">
+        <Box display="flex" alignItems="center">
+          {isNewOrder ? (
+            <HighlightOffIcon color="error" />
+          ) : (
+            <CheckCircleOutlineIcon className={classes.success} />
+          )}
+          <Typography className={classes.paidLabel} variant="h6">
+            {isNewOrder ? 'Not Paid' : 'Paid'}
+          </Typography>
+        </Box>
+        <Box display="flex" alignItems="center">
+          <Typography>Paid: {order.meta.paidOn || 'n/a'}</Typography>
+        </Box>
       </Box>
       <Grid container justify="space-between" className={classes.space}>
         <Grid item xs={9}>
