@@ -1,14 +1,8 @@
 import React from 'react';
-import OrderDetail from './';
 import OrderStatus from './Status';
+// import { render, screen, cleanup } from '../../test/app-test-setup';
 import { render, screen, cleanup } from '@testing-library/react';
 import { Order } from '../../types';
-import {
-  fireEvent,
-  waitFor,
-  waitForElementToBeRemoved,
-} from '@testing-library/dom';
-import { act } from 'react-dom/test-utils';
 
 const order1: Order = {
   id: 1,
@@ -47,14 +41,4 @@ it('should have a disabled button', () => {
   );
 
   expect(screen.getByTestId('setDueDate')).toBeDisabled();
-});
-
-it("update order status from 'new' to 'pending'", async () => {
-  render(<OrderDetail />);
-  const markAsPaidButton = await screen.findByText(/mark as paid/i);
-  fireEvent.click(markAsPaidButton);
-  const button = screen.getByTestId('orderStatus');
-  expect(button).toHaveTextContent(/pending/i);
-  expect(button).not.toBeDisabled();
-  await waitFor(() => screen.queryByText(/pending/i));
 });

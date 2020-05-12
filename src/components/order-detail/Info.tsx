@@ -8,9 +8,10 @@ import {
   Box,
   Divider,
 } from '@material-ui/core';
-import { Vanity, OrderStatus } from '../../types';
+import { Order, OrderStatus } from '../../types';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import LineItem from './LineItem';
+import { useUpdateOrderStatus } from '../../utils/orders';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,13 +32,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 type props = {
-  vanity: Vanity;
-  total: number;
-  handleMarkAsPaid: React.Dispatch<React.SetStateAction<OrderStatus>>;
+  order: Order;
+  updateStatus: React.Dispatch<React.SetStateAction<OrderStatus>>;
 };
 
-function OrderInfo({ vanity, total, handleMarkAsPaid }: props) {
+function OrderInfo({ order, updateStatus }: props) {
+  const [mutate] = useUpdateOrderStatus();
   const classes = useStyles();
+  const { vanity, total } = order;
   return (
     <Card className={classes.root}>
       <Box px={2} display="flex" alignItems="center">
@@ -82,7 +84,15 @@ function OrderInfo({ vanity, total, handleMarkAsPaid }: props) {
           color="secondary"
           variant="contained"
           className={classes.button}
-          onClick={() => handleMarkAsPaid('Pending')}
+          disabled={order.orderStatus !== 'New' ? true : false}
+          onClick={() => {
+            mutate(
+              { ...order, orderStatus: 'Pending' },
+              {
+                onSuccess: () => updateStatus('Pending'),
+              }
+            );
+          }}
         >
           Mark As Paid
         </Button>

@@ -46,7 +46,7 @@ const App: React.FC = () => {
             <Container className={classes.container} maxWidth="lg">
               <Route path="/" exact component={Dashboard} />
               <Route exact path="/orders" component={Orders} />
-              <Route path="/orders/:id" component={OrderDetail} />
+              <Route path="/orders/:orderId" component={OrderDetail} />
               <Route path="/kanban" component={Kanban} />
               <Route path="/reports" component={Reports} />
             </Container>
