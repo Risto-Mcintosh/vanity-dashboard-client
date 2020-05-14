@@ -1,15 +1,14 @@
 import React from 'react';
 import { Grid, Container } from '@material-ui/core';
-import { OrderStatus as TypeOrderStatus } from '../../types';
 import OrderInfo from './Info';
 import CustomerInfo from './CustomerInfo';
 import OrderStatus from './Status';
-import { useOrder, useUpdateOrderStatus } from '../../utils/orders';
+import { useOrder } from '../../utils/orders';
 import { useParams } from 'react-router-dom';
 
 export default function OrderDetail() {
   const { orderId } = useParams<{ orderId: string }>();
-  const { order, error } = useOrder(orderId);
+  const { order } = useOrder(orderId);
   const [orderStatus, updateStatus] = React.useState(order.orderStatus);
   // const [mutate, { status }] = useUpdateOrderStatus();
 

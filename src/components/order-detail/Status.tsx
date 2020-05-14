@@ -11,6 +11,7 @@ import { Meta, OrderStatus } from '../../types';
 import FiberNewIcon from '@material-ui/icons/FiberNew';
 import BuildIcon from '@material-ui/icons/Build';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import formatDate from '../../utils/formatDate';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,6 +39,8 @@ function Status({ orderStatus, orderMetaData }: props) {
   const isOrderNew = orderStatus === 'New';
   const isOrderPending = orderStatus === 'Pending';
   const isOrderComplete = orderStatus === 'Complete';
+  const dueDate = formatDate(orderMetaData.dueOn);
+  const completedDate = formatDate(orderMetaData.completedOn);
   return (
     <Card className={classes.root}>
       <Box px={2} display="flex" alignItems="center">
@@ -63,8 +66,8 @@ function Status({ orderStatus, orderMetaData }: props) {
       </Box>
       <Divider />
       <Box p={2} pb={0} display="flex" justifyContent="space-evenly">
-        <Typography>Due: {orderMetaData.dueOn || 'n/a'}</Typography>
-        <Typography>Completed: {orderMetaData.completedOn || 'n/a'}</Typography>
+        <Typography>Due: {dueDate}</Typography>
+        <Typography>Completed: {completedDate}</Typography>
       </Box>
     </Card>
   );

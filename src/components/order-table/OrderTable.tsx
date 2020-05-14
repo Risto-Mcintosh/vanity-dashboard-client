@@ -3,14 +3,18 @@ import React from 'react';
 import { useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import MaterialTable from 'material-table';
+import { Order } from '../../types';
+import { useHistory } from 'react-router-dom';
+import formatDate from '../../utils/formatDate';
 
 interface Props {
   tableTitle?: string;
-  orders: any[];
+  orders: Order[];
 }
 
 export default function OrdersTable({ tableTitle, orders }: Props) {
   const theme = useTheme();
+  const history = useHistory();
   return (
     <>
       <MaterialTable
@@ -19,10 +23,14 @@ export default function OrdersTable({ tableTitle, orders }: Props) {
         }}
         title={tableTitle}
         columns={[
-          { title: 'Date', field: 'date' },
-          { title: 'Name', field: 'name' },
-          { title: 'Email', field: 'email' },
-          { title: 'Number', field: 'number' },
+          {
+            title: 'Date',
+            field: 'orderedOn',
+            render: (rowData) => formatDate(rowData.orderedOn),
+          },
+          { title: 'Name', field: 'customer.name' },
+          { title: 'Email', field: 'customer.email' },
+          { title: 'Number', field: 'customer.phone' },
           { title: 'Total', field: 'total' },
         ]}
         data={orders}
@@ -33,10 +41,10 @@ export default function OrdersTable({ tableTitle, orders }: Props) {
           sorting: false,
           draggable: false,
         }}
+        onRowClick={(e, rowData) => history.push(`/orders/${rowData?.id}`)}
         components={{
           Toolbar: (props) => (
             <Typography
-              {...props}
               component="h2"
               variant="h6"
               color="primary"

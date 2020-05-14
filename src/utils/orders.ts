@@ -1,6 +1,7 @@
 import { Order, OrderStatus } from '../types';
 import { useQuery, useMutation, queryCache } from 'react-query';
 import { loadingOrder } from './order-placeholder';
+import * as orderClient from './client';
 
 let order1: Order = {
   id: 1,
@@ -31,8 +32,12 @@ let order1: Order = {
   },
 };
 
-function getOrder(key: string, orderId: { orderId: string }) {
-  return Promise.resolve(order1);
+type orderId = {
+  orderId: string;
+};
+
+function getOrder(key: string, { orderId }: orderId) {
+  return orderClient.read(orderId).then((data) => data);
 }
 
 function useOrder(orderId: string) {
@@ -42,7 +47,7 @@ function useOrder(orderId: string) {
 
 function updateOrder(newOrder: Order) {
   order1 = { ...order1, ...newOrder };
-  return Promise.resolve(order1);
+  return orderClient.update(newOrder).then((data) => data);
 }
 
 function useUpdateOrderStatus() {
@@ -57,4 +62,12 @@ function useUpdateOrderStatus() {
   });
 }
 
-export { useOrder, useUpdateOrderStatus };
+function getOrders() {
+  return orderClient.list();
+}
+
+function useListOrders() {
+  return useQuery(['orders'], getOrders);
+}
+
+export { useOrder, useUpdateOrderStatus, useListOrders };

@@ -13,7 +13,6 @@ const useStyles = makeStyles((theme) => ({
 const ApplicationBar = ({ location }: RouteComponentProps) => {
   const classes = useStyles();
   const pageName = location.pathname;
-  console.log(location);
   return (
     <AppBar className={classes.appBar}>
       <Toolbar>

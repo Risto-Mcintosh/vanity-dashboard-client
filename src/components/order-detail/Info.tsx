@@ -13,6 +13,7 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import LineItem from './LineItem';
 import { useUpdateOrderStatus } from '../../utils/orders';
+import formatDate from '../../utils/formatDate';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,7 +60,7 @@ function OrderInfo({ order, updateStatus }: props) {
           </Typography>
         </Box>
         <Box display="flex" alignItems="center">
-          <Typography>Paid: {order.meta.paidOn || 'n/a'}</Typography>
+          <Typography>Paid: {formatDate(order.meta.paidOn)}</Typography>
         </Box>
       </Box>
       <Grid container justify="space-between" className={classes.space}>
@@ -75,11 +76,7 @@ function OrderInfo({ order, updateStatus }: props) {
             size={vanity.table.size}
             price={vanity.table.price}
           />
-          <LineItem
-            name="Base Material"
-            size={vanity.baseMaterial.size}
-            price={vanity.baseMaterial.price}
-          />
+          <LineItem name="Base Material" price={vanity.baseMaterial.price} />
         </Grid>
         <Grid item container xs={3} alignItems="center" justify="flex-end">
           <Box display="flex" pr={2}>
