@@ -8,7 +8,9 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import { Paper } from '@material-ui/core';
-import { useListOrders } from '../../utils/orders';
+import { Order } from '../../types';
+import OrderCount from './OrderCount';
+import OrdersTable from '../order-table/OrderTable';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -19,9 +21,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function WeeklyOrders() {
   const classes = useStyles();
-  const { orders } = useListOrders('ordersDue');
 
-  const mappedOrders = weeklyOrderMapper.map(orders);
+  const [selected, setSelected] = React.useState<Order[] | null>(null);
 
   return (
     <Paper className={classes.paper}>
@@ -39,9 +40,15 @@ export default function WeeklyOrders() {
           </TableRow>
         </TableHead>
         <TableBody>
-          <TableRow>{weeklyOrderMapper.byOrderCount(mappedOrders)}</TableRow>
+          <OrderCount setSelected={setSelected} />
         </TableBody>
       </Table>
+      {selected && (
+        <div>
+          <OrdersTable orders={selected} />
+        </div>
+      )}
+      {console.log('selected', selected)}
     </Paper>
   );
 }
