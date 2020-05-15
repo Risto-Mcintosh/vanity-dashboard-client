@@ -3,6 +3,7 @@ import WeeklyOrders from '../../Components/weekly-orders';
 import { makeStyles } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
 import OrdersTable from '../../Components/order-table/OrderTable';
+import { useListOrders } from '../../utils/orders';
 
 const useStyles = makeStyles({
   root: {
@@ -12,6 +13,7 @@ const useStyles = makeStyles({
 
 const DashboardIndex: React.FC = () => {
   const classes = useStyles();
+  const { orders } = useListOrders('recent');
   return (
     <Grid
       className={classes.root}
@@ -20,7 +22,7 @@ const DashboardIndex: React.FC = () => {
       justify="space-evenly"
     >
       <WeeklyOrders />
-      <OrdersTable tableTitle="Recent Orders" orders={[]} />
+      <OrdersTable tableTitle="Recent Orders" orders={orders} />
     </Grid>
   );
 };

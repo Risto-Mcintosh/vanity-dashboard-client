@@ -39,8 +39,6 @@ function Status({ orderStatus, orderMetaData }: props) {
   const isOrderNew = orderStatus === 'New';
   const isOrderPending = orderStatus === 'Pending';
   const isOrderComplete = orderStatus === 'Complete';
-  const dueDate = formatDate(orderMetaData.dueOn);
-  const completedDate = formatDate(orderMetaData.completedOn);
   return (
     <Card className={classes.root}>
       <Box px={2} display="flex" alignItems="center">
@@ -59,15 +57,17 @@ function Status({ orderStatus, orderMetaData }: props) {
         <Button
           data-testid="setDueDate"
           variant="contained"
-          disabled={orderStatus === 'New' ? true : false}
+          disabled={isOrderNew ? true : false}
         >
           Set Due Date
         </Button>
       </Box>
       <Divider />
       <Box p={2} pb={0} display="flex" justifyContent="space-evenly">
-        <Typography>Due: {dueDate}</Typography>
-        <Typography>Completed: {completedDate}</Typography>
+        <Typography>Due: {formatDate(orderMetaData.dueOn)}</Typography>
+        <Typography>
+          Completed: {formatDate(orderMetaData.completedOn)}
+        </Typography>
       </Box>
     </Card>
   );

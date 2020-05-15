@@ -1,36 +1,7 @@
-import { Order, OrderStatus } from '../types';
+import { Order } from '../types';
 import { useQuery, useMutation, queryCache } from 'react-query';
 import { loadingOrder } from './order-placeholder';
 import * as orderClient from './client';
-
-let order1: Order = {
-  id: 1,
-  total: 600,
-  orderedOn: new Date(),
-  orderStatus: 'New',
-  meta: {},
-  customer: {
-    id: 2,
-    name: 'Someone Name',
-    email: 'someone@gmail.com',
-    phone: '214-333-333',
-  },
-  vanity: {
-    color: 'Black',
-    mirror: {
-      size: 'Large',
-      price: 200,
-    },
-    table: {
-      size: 'Large',
-      price: 200,
-    },
-    baseMaterial: {
-      size: 'Large',
-      price: 200,
-    },
-  },
-};
 
 type orderId = {
   orderId: string;
@@ -46,7 +17,6 @@ function useOrder(orderId: string) {
 }
 
 function updateOrder(newOrder: Order) {
-  order1 = { ...order1, ...newOrder };
   return orderClient.update(newOrder).then((data) => data);
 }
 
@@ -62,12 +32,13 @@ function useUpdateOrderStatus() {
   });
 }
 
-function getOrders() {
-  return orderClient.list();
+function getOrders(key: string, { query }: { query: string }) {
+  return orderClient.list(query);
 }
 
-function useListOrders() {
-  return useQuery(['orders'], getOrders);
+function useListOrders(query = '') {
+  const { data, ...results } = useQuery(['orders', { query }], getOrders);
+  return { ...results, orders: data ?? [loadingOrder] };
 }
 
 export { useOrder, useUpdateOrderStatus, useListOrders };

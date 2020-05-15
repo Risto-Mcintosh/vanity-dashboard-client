@@ -1,4 +1,5 @@
 import React from 'react';
+import weeklyOrderMapper, { daysOfTheWeek } from './mapWeeklyOrders';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -7,16 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import { Paper } from '@material-ui/core';
-
-const daysOfTheWeek: string[] = [
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-  'Sunday',
-];
+import { useListOrders } from '../../utils/orders';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -27,6 +19,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function WeeklyOrders() {
   const classes = useStyles();
+  const { orders } = useListOrders('ordersDue');
+
+  const mappedOrders = weeklyOrderMapper.map(orders);
+
   return (
     <Paper className={classes.paper}>
       <Typography component="h2" variant="h6" color="primary" gutterBottom>
@@ -36,20 +32,14 @@ export default function WeeklyOrders() {
         <TableHead>
           <TableRow>
             {daysOfTheWeek.map((day) => (
-              <TableCell align="center">{day}</TableCell>
+              <TableCell key={day} align="center">
+                {day}
+              </TableCell>
             ))}
           </TableRow>
         </TableHead>
         <TableBody>
-          <TableRow>
-            <TableCell align="center">0</TableCell>
-            <TableCell align="center">4</TableCell>
-            <TableCell align="center">0</TableCell>
-            <TableCell align="center">2</TableCell>
-            <TableCell align="center">1</TableCell>
-            <TableCell align="center">0</TableCell>
-            <TableCell align="center">0</TableCell>
-          </TableRow>
+          <TableRow>{weeklyOrderMapper.byOrderCount(mappedOrders)}</TableRow>
         </TableBody>
       </Table>
     </Paper>

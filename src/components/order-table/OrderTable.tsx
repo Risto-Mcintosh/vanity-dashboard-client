@@ -31,7 +31,12 @@ export default function OrdersTable({ tableTitle, orders }: Props) {
           { title: 'Name', field: 'customer.name' },
           { title: 'Email', field: 'customer.email' },
           { title: 'Number', field: 'customer.phone' },
-          { title: 'Total', field: 'total' },
+          {
+            title: 'Total',
+            field: 'total',
+            render: (rowData) => `$${rowData.total.toFixed(2)}`,
+          },
+          { title: 'Status', field: 'orderStatus' },
         ]}
         data={orders}
         options={{
@@ -43,7 +48,7 @@ export default function OrdersTable({ tableTitle, orders }: Props) {
         }}
         onRowClick={(e, rowData) => history.push(`/orders/${rowData?.id}`)}
         components={{
-          Toolbar: (props) => (
+          Toolbar: () => (
             <Typography
               component="h2"
               variant="h6"

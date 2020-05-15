@@ -1,10 +1,10 @@
-import { Order } from '../types';
+import { Order, OrderStatus } from '../types';
 
 const loadingOrder: Order = {
   id: 0,
   total: 0,
   orderedOn: new Date(),
-  orderStatus: 'New',
+  orderStatus: 'Loading...' as OrderStatus,
   meta: {},
   customer: {
     id: 0,

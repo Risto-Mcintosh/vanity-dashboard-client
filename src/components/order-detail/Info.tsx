@@ -8,7 +8,7 @@ import {
   Box,
   Divider,
 } from '@material-ui/core';
-import { Order, OrderStatus } from '../../types';
+import { Order } from '../../types';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import LineItem from './LineItem';
@@ -38,10 +38,9 @@ const useStyles = makeStyles((theme) => ({
 
 type props = {
   order: Order;
-  updateStatus: React.Dispatch<React.SetStateAction<OrderStatus>>;
 };
 
-function OrderInfo({ order, updateStatus }: props) {
+function OrderInfo({ order }: props) {
   const [mutate] = useUpdateOrderStatus();
   const classes = useStyles();
   const { vanity, total } = order;
@@ -96,14 +95,7 @@ function OrderInfo({ order, updateStatus }: props) {
           variant="contained"
           className={classes.button}
           disabled={order.orderStatus !== 'New' ? true : false}
-          onClick={() => {
-            mutate(
-              { ...order, orderStatus: 'Pending' },
-              {
-                onSuccess: () => updateStatus('Pending'),
-              }
-            );
-          }}
+          onClick={() => mutate({ ...order, orderStatus: 'Pending' })}
         >
           Mark As Paid
         </Button>
