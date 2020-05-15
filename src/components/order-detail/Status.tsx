@@ -7,11 +7,11 @@ import {
   Box,
   Divider,
 } from '@material-ui/core';
-import { Meta, OrderStatus } from '../../types';
-import FiberNewIcon from '@material-ui/icons/FiberNew';
-import BuildIcon from '@material-ui/icons/Build';
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import { Order } from '../../types';
 import formatDate from '../../utils/formatDate';
+import { MutationOptions } from 'react-query';
+import OrderStatusIcon from './OrderStatusIcon';
+import DatePicker from '../DatePicker';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,44 +30,36 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 type props = {
-  orderStatus: OrderStatus;
-  orderMetaData: Meta;
+  order: Order;
+  mutateOrder: (
+    variables: Order,
+    options?: MutationOptions<Order, Order>
+  ) => Promise<Order>;
 };
 
-function Status({ orderStatus, orderMetaData }: props) {
+function Status({ order, mutateOrder }: props) {
   const classes = useStyles();
-  const isOrderNew = orderStatus === 'New';
-  const isOrderPending = orderStatus === 'Pending';
-  const isOrderComplete = orderStatus === 'Complete';
+
   return (
     <Card className={classes.root}>
       <Box px={2} display="flex" alignItems="center">
-        {isOrderNew && <FiberNewIcon color="secondary" />}
-        {isOrderPending && <BuildIcon color="secondary" />}
-        {isOrderComplete && <CheckCircleOutlineIcon color="secondary" />}
+        <OrderStatusIcon orderStatus={order.orderStatus} />
         <Typography
           data-testid="orderStatus"
           className={classes.paidLabel}
           variant="h6"
         >
-          {`Order Status - ${orderStatus}`}
+          {`Order Status - ${order.orderStatus}`}
         </Typography>
       </Box>
       <Box display="flex" justifyContent="center" px={2} py={3}>
-        <Button
-          data-testid="setDueDate"
-          variant="contained"
-          disabled={isOrderNew ? true : false}
-        >
-          Set Due Date
-        </Button>
+        <DatePicker order={order} mutateOrder={mutateOrder} />
       </Box>
+
       <Divider />
       <Box p={2} pb={0} display="flex" justifyContent="space-evenly">
-        <Typography>Due: {formatDate(orderMetaData.dueOn)}</Typography>
-        <Typography>
-          Completed: {formatDate(orderMetaData.completedOn)}
-        </Typography>
+        <Typography>Due: {formatDate(order.meta.dueOn)}</Typography>
+        <Typography>Completed: {formatDate(order.meta.completedOn)}</Typography>
       </Box>
     </Card>
   );

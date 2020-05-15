@@ -20,7 +20,7 @@ function updateOrder(newOrder: Order) {
   return orderClient.update(newOrder).then((data) => data);
 }
 
-function useUpdateOrderStatus() {
+function useUpdateOrder() {
   return useMutation(updateOrder, {
     onMutate: (data) => {
       queryCache.removeQueries(['order', { orderId: data.id.toString() }]);
@@ -41,4 +41,4 @@ function useListOrders(query = '') {
   return { ...results, orders: data ?? [loadingOrder] };
 }
 
-export { useOrder, useUpdateOrderStatus, useListOrders };
+export { useOrder, useUpdateOrder, useListOrders };

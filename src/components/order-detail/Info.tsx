@@ -12,8 +12,8 @@ import { Order } from '../../types';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import LineItem from './LineItem';
-import { useUpdateOrderStatus } from '../../utils/orders';
 import formatDate from '../../utils/formatDate';
+import { MutationOptions } from 'react-query';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,10 +38,13 @@ const useStyles = makeStyles((theme) => ({
 
 type props = {
   order: Order;
+  mutateOrder: (
+    variables: Order,
+    options?: MutationOptions<Order, Order>
+  ) => Promise<Order>;
 };
 
-function OrderInfo({ order }: props) {
-  const [mutate] = useUpdateOrderStatus();
+function OrderInfo({ order, mutateOrder }: props) {
   const classes = useStyles();
   const { vanity, total } = order;
   const isNewOrder = order.orderStatus === 'New';
@@ -95,7 +98,7 @@ function OrderInfo({ order }: props) {
           variant="contained"
           className={classes.button}
           disabled={order.orderStatus !== 'New' ? true : false}
-          onClick={() => mutate({ ...order, orderStatus: 'Pending' })}
+          onClick={() => mutateOrder({ ...order, orderStatus: 'Pending' })}
         >
           Mark As Paid
         </Button>

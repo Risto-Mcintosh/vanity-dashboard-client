@@ -1,5 +1,5 @@
 import React from 'react';
-import weeklyOrderMapper, { daysOfTheWeek } from './mapWeeklyOrders';
+import { daysOfTheWeek } from './mapWeeklyOrders';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -48,7 +48,6 @@ export default function WeeklyOrders() {
           <OrdersTable orders={selected} />
         </div>
       )}
-      {console.log('selected', selected)}
     </Paper>
   );
 }

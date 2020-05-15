@@ -21,8 +21,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function OrderCount({ setSelected }: props) {
-  const { orders } = useListOrders('ordersDue');
-  const mappedOrders = weeklyOrders.map(orders);
+  const mappedOrders = weeklyOrders.map(useListOrders('ordersDue').orders);
   const classes = useStyles();
   return (
     <TableRow>
