@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Card,
-  Typography,
-  makeStyles,
-  Button,
-  Box,
-  Divider,
-} from '@material-ui/core';
+import { Card, Typography, makeStyles, Box, Divider } from '@material-ui/core';
 import { Order } from '../../types';
 import formatDate from '../../utils/formatDate';
 import { MutationOptions } from 'react-query';
@@ -18,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     padding: `${theme.spacing(2)}px 0`,
     marginTop: theme.spacing(4),
   },
-  paidLabel: {
+  orderStatus: {
     marginLeft: theme.spacing(1),
   },
   orderTotal: {
@@ -46,7 +39,7 @@ function Status({ order, mutateOrder }: props) {
         <OrderStatusIcon orderStatus={order.orderStatus} />
         <Typography
           data-testid="orderStatus"
-          className={classes.paidLabel}
+          className={classes.orderStatus}
           variant="h6"
         >
           {`Order Status - ${order.orderStatus}`}
