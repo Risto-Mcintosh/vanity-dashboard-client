@@ -11,8 +11,9 @@ export type Customer = {
   email: string;
 };
 
-type VanityComponent = {
+export type VanityComponent = {
   id?: number | string;
+  type?: string;
   size: Sizes | string;
   price: number;
 };
