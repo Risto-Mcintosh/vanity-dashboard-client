@@ -1,4 +1,4 @@
-import { Order, OrderStatus } from '../types';
+import { Order, OrderStatus, VanityComponent } from '../types';
 
 const loadingOrder: Order = {
   id: 0,
@@ -29,4 +29,10 @@ const loadingOrder: Order = {
   },
 };
 
-export { loadingOrder };
+const loadingProduct: VanityComponent = {
+  type: 'Loading...',
+  size: 'Loading ...',
+  price: 0,
+};
+
+export { loadingOrder, loadingProduct };

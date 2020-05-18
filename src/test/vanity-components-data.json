@@ -1,0 +1,11 @@
+[
+  { "id": 1, "type": "Mirror", "size": "Large", "price": 200 },
+  { "id": 2, "type": "Mirror", "size": "Small", "price": 100 },
+  { "id": 3, "type": "Mirror", "size": "Medium", "price": 150 },
+  { "id": 1, "type": "Table", "size": "Large", "price": 200 },
+  { "id": 2, "type": "Table", "size": "Medium", "price": 150 },
+  { "id": 3, "type": "Table", "size": "Small", "price": 100 },
+  { "id": 1, "type": "BaseMaterial", "size": "Large", "price": 200 },
+  { "id": 2, "type": "BaseMaterial", "size": "Medium", "price": 150 },
+  { "id": 3, "type": "BaseMaterial", "size": "Small", "price": 100 }
+]
