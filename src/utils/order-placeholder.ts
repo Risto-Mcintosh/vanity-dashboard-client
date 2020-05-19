@@ -15,14 +15,17 @@ const loadingOrder: Order = {
   vanity: {
     color: 'White',
     mirror: {
+      type: 'Loading...',
       size: 'Loading...',
       price: 0,
     },
     table: {
+      type: 'Loading...',
       size: 'Loading...',
       price: 0,
     },
     baseMaterial: {
+      type: 'Loading...',
       size: 'Loading...',
       price: 0,
     },

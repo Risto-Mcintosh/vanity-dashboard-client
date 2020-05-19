@@ -35,15 +35,21 @@ function generateVanity(): Vanity {
   const color = faker.random.arrayElement(vanityColors);
   const mirror = {
     id: faker.random.uuid(),
+    type: 'Mirror',
     size: mirrorSize,
     price: prices[mirrorSize],
   };
   const table = {
     id: faker.random.uuid(),
+    type: 'Table',
     size: tableSize,
     price: prices[tableSize],
   };
-  const baseMaterial = { ...mirror, id: faker.random.uuid() };
+  const baseMaterial = {
+    ...mirror,
+    type: 'Base Material',
+    id: faker.random.uuid(),
+  };
   return {
     color,
     mirror,

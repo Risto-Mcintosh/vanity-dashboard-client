@@ -23,7 +23,6 @@ function updateOrder(newOrder: Order) {
 function useUpdateOrder() {
   return useMutation(updateOrder, {
     onMutate: (data) => {
-      queryCache.removeQueries(['order', { orderId: data.id.toString() }]);
       return queryCache.setQueryData(
         ['order', { orderId: data.id.toString() }],
         data

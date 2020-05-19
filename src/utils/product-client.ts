@@ -6,10 +6,14 @@ async function list() {
 }
 
 async function update(productType: string, update: VanityComponent) {
-  const old = productList.find(
-    (p) => p.type === productType && p.id === update.id
-  );
-  return ({ ...old, ...update } as unknown) as VanityComponent;
+  const old = productList.map((p) => {
+    if (p.type === productType && p.id === update.id) {
+      return { ...p, ...update };
+    }
+    return p;
+  });
+
+  return (old as unknown) as VanityComponent[];
 }
 
 export { list, update };

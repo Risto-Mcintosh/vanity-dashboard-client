@@ -13,7 +13,7 @@ export type Customer = {
 
 export type VanityComponent = {
   id?: number | string;
-  type?: string;
+  type: string;
   size: Sizes | string;
   price: number;
 };

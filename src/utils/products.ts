@@ -24,8 +24,7 @@ function updateProduct({
 
 function useUpdateProduct() {
   return useMutation(updateProduct, {
-    onMutate: (data) => {
-      queryCache.removeQueries('products');
+    onSuccess: (data) => {
       return queryCache.setQueryData('products', data);
     },
   });
