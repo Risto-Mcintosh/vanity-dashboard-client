@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import { Paper } from '@material-ui/core';
 import { Order } from '../../types';
 import OrderCount from './OrderCount';
-import OrdersTable from '../order-table/OrderTable';
+import OrdersTable from '../order-table';
 
 const useStyles = makeStyles((theme) => ({
   paper: {

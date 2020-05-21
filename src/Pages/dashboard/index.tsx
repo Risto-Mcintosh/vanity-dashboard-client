@@ -2,7 +2,7 @@ import React from 'react';
 import WeeklyOrders from '../../Components/weekly-orders';
 import { makeStyles } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
-import OrdersTable from '../../Components/order-table/OrderTable';
+import OrdersTable from '../../Components/order-table';
 import { useListOrders } from '../../utils/orders';
 
 const useStyles = makeStyles({
@@ -11,7 +11,7 @@ const useStyles = makeStyles({
   },
 });
 
-const DashboardIndex: React.FC = () => {
+function Dashboard() {
   const classes = useStyles();
   const { orders } = useListOrders('recent');
   return (
@@ -25,6 +25,6 @@ const DashboardIndex: React.FC = () => {
       <OrdersTable tableTitle="Recent Orders" orders={orders} />
     </Grid>
   );
-};
+}
 
-export default DashboardIndex;
+export default Dashboard;

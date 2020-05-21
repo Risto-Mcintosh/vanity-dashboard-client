@@ -6,9 +6,9 @@ import { ThemeProvider } from '@material-ui/core';
 import theme from './theme';
 import Orders from './Pages/orders';
 import Products from './Pages/products';
+import Kanban from './Pages/kanban';
 import OrderDetail from './Components/order-detail';
 
-const Kanban = () => <h1 style={{ marginTop: '64px' }}>Kanban</h1>;
 const Reports = () => <h1 style={{ marginTop: '64px' }}>Reports</h1>;
 
 function App() {

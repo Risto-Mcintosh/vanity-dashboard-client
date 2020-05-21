@@ -1,5 +1,5 @@
 import React from 'react';
-import OrdersTable from '../../Components/order-table/OrderTable';
+import OrdersTable from '../../Components/order-table';
 import { useListOrders } from '../../utils/orders';
 
 function Orders() {
