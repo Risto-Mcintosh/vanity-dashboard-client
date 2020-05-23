@@ -8,28 +8,41 @@ type props = {
   index: number;
 };
 
-type contProps = {
-  testProp= ""
-}
+type color = {
+  border: string;
+  background: string;
+};
 
-const Container = styled('div')((props) => ({
-  padding: props.theme.spacing(1),
-  marginBottom: props.theme.spacing(2),
+const useStyles = makeStyles((theme) => ({
+  root: {
+    marginBottom: theme.spacing(2),
+    padding: theme.spacing(1),
+    border: `1px solid black`,
+  },
+  dragging: {
+    border: `1px solid ${theme.palette.secondary.main}`,
+    backgroundColor: theme.palette.secondary.main,
+  },
 }));
 
 export default function Task({ order, index }: props) {
+  const classes = useStyles();
   return (
     <Draggable draggableId={order.orderId.toString()} index={index}>
-      {(provided) => (
-        <Container
-          testProp="something"
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          ref={provided.innerRef}
-        >
-          {order.customerName}
-        </Container>
-      )}
+      {(provided, snapshot) => {
+        return (
+          <div
+            className={`${classes.root} ${
+              snapshot.isDragging && classes.dragging
+            }`}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            ref={provided.innerRef}
+          >
+            {order.customerName}
+          </div>
+        );
+      }}
     </Draggable>
   );
 }
