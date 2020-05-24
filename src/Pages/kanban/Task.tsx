@@ -39,6 +39,7 @@ export default function Task({ order, index }: props) {
             {...provided.dragHandleProps}
             ref={provided.innerRef}
           >
+            orderId: {order.orderId}
             {order.customerName}
           </div>
         );

@@ -1,7 +1,7 @@
 export type kanbanOrderDetail = {
   orderId: number;
   customerName: string;
-  dueOn: Date | string;
+  dueOn: Date | string | null;
   orderStatus: string;
   kanbanColumnId: number;
   priority: number;
@@ -15,5 +15,5 @@ export type kanbanColumn = {
   columnPosition: number;
   startColumn: boolean;
   endColumn: boolean;
-  orderIds: string[];
+  orderIds: number[];
 };
