@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Task({ order, index }: props) {
   const classes = useStyles();
   return (
-    <Draggable draggableId={order.orderId.toString()} index={index}>
+    <Draggable draggableId={order.orderId} index={index}>
       {(provided, snapshot) => {
         return (
           <div
@@ -39,7 +39,6 @@ export default function Task({ order, index }: props) {
             {...provided.dragHandleProps}
             ref={provided.innerRef}
           >
-            orderId: {order.orderId}
             {order.customerName}
           </div>
         );

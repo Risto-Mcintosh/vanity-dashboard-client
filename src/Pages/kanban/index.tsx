@@ -1,19 +1,15 @@
 import React from 'react';
-import { DragDropContext, DropResult } from 'react-beautiful-dnd';
+import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
 import Column from './Column';
-import { columns, orders } from './kanban-test-data';
+import { columns, orders, columnOrder } from './kanban-test-data';
 import { kanbanOrderDetail } from './kanban.types';
-import { Box } from '@material-ui/core';
-
-type filteredOrders = {
-  [key: number]: kanbanOrderDetail;
-};
+import { Box, RootRef } from '@material-ui/core';
 
 export default function Kanban() {
-  const [data, setData] = React.useState({ columns, orders });
+  const [data, setData] = React.useState({ columns, orders, columnOrder });
 
   function onDragEnd(result: DropResult) {
-    const { source, destination, draggableId } = result;
+    const { source, destination, draggableId, type } = result;
     if (!destination) return;
     if (
       source.index === destination.index &&
@@ -21,45 +17,46 @@ export default function Kanban() {
     )
       return;
 
-    const start = data.columns.find(
-      (col) => col.columnId.toString() === source.droppableId
-    );
+    if (type === 'column') {
+      const destinationColumn =
+        data.columns[data.columnOrder[destination.index]];
+      const isStartOrEndColumn =
+        destinationColumn.endColumn || destinationColumn.startColumn;
+      if (isStartOrEndColumn) return;
+      const newColumnOrder = [...data.columnOrder];
+      newColumnOrder.splice(source.index, 1);
+      newColumnOrder.splice(destination.index, 0, draggableId);
 
-    if (!start) return;
+      setData((prev) => ({
+        ...prev,
+        columnOrder: newColumnOrder,
+      }));
 
-    const finish = data.columns.find(
-      (col) => col.columnId.toString() === destination.droppableId
-    );
+      return;
+    }
+
+    const start = data.columns[source.droppableId];
+    const finish = data.columns[destination.droppableId];
 
     if (start === finish) {
       const newOrder = [...start.orderIds];
       newOrder.splice(source.index, 1);
-      newOrder.splice(destination.index, 0, parseInt(draggableId));
+      newOrder.splice(destination.index, 0, draggableId);
 
       const newColumn = {
         ...start,
         orderIds: newOrder,
       };
 
-      const newColumns = data.columns.filter(
-        (col) => col.columnId !== start.columnId
-      );
       setData((prev) => ({
         ...prev,
-        columns: [newColumn, ...newColumns],
+        columns: { ...prev.columns, [newColumn.columnId]: newColumn },
       }));
       return;
     }
-    if (!finish) return;
 
-    const movedOrder = data.orders.find(
-      (order) => order.orderId === parseInt(draggableId)
-    );
-    if (!movedOrder) return;
-    movedOrder.kanbanColumnId = parseInt(destination.droppableId);
-    const unChangedOrders = data.orders.filter(
-      (order) => order.orderId !== parseInt(draggableId)
-    );
+    const movedOrder = data.orders[draggableId];
+    movedOrder.kanbanColumnId = destination.droppableId;
 
     const newStart = [...start.orderIds];
     newStart.splice(source.index, 1);
@@ -69,36 +66,45 @@ export default function Kanban() {
     };
 
     const newFinish = [...finish.orderIds];
-    newFinish.splice(destination.index, 0, parseInt(draggableId));
+    newFinish.splice(destination.index, 0, draggableId);
     const newFinishColumn = {
       ...finish,
       orderIds: newFinish,
     };
 
-    const unChangedColumns = data.columns
-      .filter((col) => col.columnId !== start.columnId)
-      .filter((col) => col.columnId !== finish.columnId);
-    //console.log({ newStart, newFinish, newFinishColumn, unChangedColumns });
-    setData({
-      orders: [movedOrder, ...unChangedOrders],
-      columns: [newStartColumn, newFinishColumn, ...unChangedColumns],
-    });
+    setData((prev) => ({
+      ...prev,
+      orders: { ...prev.orders, [movedOrder.orderId]: movedOrder },
+      columns: {
+        ...prev.columns,
+        [newStartColumn.columnId]: newStartColumn,
+        [newFinishColumn.columnId]: newFinishColumn,
+      },
+    }));
   }
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <Box display="flex">
-        {data.columns.map((col) => {
-          const orders: filteredOrders = data.orders
-            .filter((order) => order.kanbanColumnId === col.columnId)
-            .reduce((prev, cur) => ({ ...prev, [cur.orderId]: cur }), {});
-
-          const sortedOrder = col.orderIds?.map((id) => orders[id]);
-          console.log({ [col.columnName]: { sortedOrder } });
-          return (
-            <Column key={col.columnId} column={col} orders={sortedOrder} />
-          );
-        })}
-      </Box>
+      <Droppable droppableId="all-columns" direction="horizontal" type="column">
+        {(provided) => (
+          <RootRef rootRef={provided.innerRef}>
+            <Box {...provided.droppableProps} display="flex">
+              {data.columnOrder.map((columnId, index) => {
+                const column = data.columns[columnId];
+                const orders = column.orderIds.map((id) => data.orders[id]);
+                return (
+                  <Column
+                    key={columnId}
+                    column={column}
+                    orders={orders}
+                    index={index}
+                  />
+                );
+              })}
+              {provided.placeholder}
+            </Box>
+          </RootRef>
+        )}
+      </Droppable>
     </DragDropContext>
   );
 }
