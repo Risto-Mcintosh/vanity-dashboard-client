@@ -11,7 +11,7 @@ type props = {
 };
 
 export default function Column({ column, orders, index }: props) {
-  const isStartOrEnd = column.endColumn || column.startColumn;
+  const isStartOrEnd = column.isCompleteColumn || column.isStartColumn;
   const isDragDisabled = column.columnLock || isStartOrEnd;
   return (
     <Draggable

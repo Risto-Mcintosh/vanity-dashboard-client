@@ -2,52 +2,28 @@ import React from 'react';
 import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
 import Column from './Column';
 import { columns, orders, columnOrder } from './kanban-test-data';
-import { kanbanOrderDetail } from './kanban.types';
+import DragNDrop from './dndUtil';
 import { Box, RootRef } from '@material-ui/core';
 
 export default function Kanban() {
   const [data, setData] = React.useState({ columns, orders, columnOrder });
 
   function onDragEnd(result: DropResult) {
-    const { source, destination, draggableId, type } = result;
-    if (!destination) return;
-    if (
-      source.index === destination.index &&
-      source.droppableId === destination.droppableId
-    )
-      return;
+    if (!result.destination) return;
+    const _DragNDrop = new DragNDrop({ ...result, ...data });
+    if (_DragNDrop.isSamePosition()) return;
 
-    if (type === 'column') {
-      const destinationColumn =
-        data.columns[data.columnOrder[destination.index]];
-      const isStartOrEndColumn =
-        destinationColumn.endColumn || destinationColumn.startColumn;
-      if (isStartOrEndColumn) return;
-      const newColumnOrder = [...data.columnOrder];
-      newColumnOrder.splice(source.index, 1);
-      newColumnOrder.splice(destination.index, 0, draggableId);
-
+    if (result.type === 'column') {
+      const newColumnOrder = _DragNDrop.updateColumnOrder();
       setData((prev) => ({
         ...prev,
         columnOrder: newColumnOrder,
       }));
-
       return;
     }
 
-    const start = data.columns[source.droppableId];
-    const finish = data.columns[destination.droppableId];
-
-    if (start === finish) {
-      const newOrder = [...start.orderIds];
-      newOrder.splice(source.index, 1);
-      newOrder.splice(destination.index, 0, draggableId);
-
-      const newColumn = {
-        ...start,
-        orderIds: newOrder,
-      };
-
+    if (_DragNDrop.isSameColumn()) {
+      const newColumn = _DragNDrop.reorderWithinColumn();
       setData((prev) => ({
         ...prev,
         columns: { ...prev.columns, [newColumn.columnId]: newColumn },
@@ -55,26 +31,14 @@ export default function Kanban() {
       return;
     }
 
-    const movedOrder = data.orders[draggableId];
-    movedOrder.kanbanColumnId = destination.droppableId;
-
-    const newStart = [...start.orderIds];
-    newStart.splice(source.index, 1);
-    const newStartColumn = {
-      ...start,
-      orderIds: newStart,
-    };
-
-    const newFinish = [...finish.orderIds];
-    newFinish.splice(destination.index, 0, draggableId);
-    const newFinishColumn = {
-      ...finish,
-      orderIds: newFinish,
-    };
-
+    const {
+      movedItem,
+      newStartColumn,
+      newFinishColumn,
+    } = _DragNDrop.moveToNewColumn();
     setData((prev) => ({
       ...prev,
-      orders: { ...prev.orders, [movedOrder.orderId]: movedOrder },
+      orders: { ...prev.orders, [movedItem.orderId]: movedItem },
       columns: {
         ...prev.columns,
         [newStartColumn.columnId]: newStartColumn,

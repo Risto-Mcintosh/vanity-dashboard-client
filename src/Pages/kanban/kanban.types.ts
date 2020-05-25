@@ -12,7 +12,13 @@ export type kanbanColumn = {
   columnName: string;
   wip?: number | null;
   columnLock: boolean;
-  startColumn: boolean;
-  endColumn: boolean;
+  isStartColumn: boolean;
+  isCompleteColumn: boolean;
   orderIds: string[];
+};
+
+export type kanbanDataMap = {
+  columns: { [key: string]: kanbanColumn };
+  orders: { [key: string]: kanbanOrderDetail };
+  columnOrder: string[];
 };

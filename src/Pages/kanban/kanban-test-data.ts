@@ -49,8 +49,8 @@ const columns: columnHashMap = {
     columnName: 'Start',
     wip: null,
     columnLock: true,
-    startColumn: true,
-    endColumn: false,
+    isStartColumn: true,
+    isCompleteColumn: false,
     orderIds: ['1', '2', '3'],
   },
   '653': {
@@ -58,8 +58,8 @@ const columns: columnHashMap = {
     columnName: 'Assemble',
     wip: 2,
     columnLock: false,
-    startColumn: false,
-    endColumn: false,
+    isStartColumn: false,
+    isCompleteColumn: false,
     orderIds: [],
   },
   '321': {
@@ -67,8 +67,8 @@ const columns: columnHashMap = {
     columnName: 'Paint',
     wip: 2,
     columnLock: false,
-    startColumn: false,
-    endColumn: false,
+    isStartColumn: false,
+    isCompleteColumn: false,
     orderIds: [],
   },
   '83': {
@@ -76,8 +76,8 @@ const columns: columnHashMap = {
     columnName: 'Complete',
     wip: null,
     columnLock: true,
-    startColumn: false,
-    endColumn: true,
+    isStartColumn: false,
+    isCompleteColumn: true,
     orderIds: [],
   },
 };
