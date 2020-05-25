@@ -1,7 +1,7 @@
 import React from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { Paper, Box, Divider, Typography } from '@material-ui/core';
-import { kanbanOrderDetail, kanbanColumn } from './kanban.types';
+import { kanbanOrderDetail, kanbanColumn } from '../../types';
 import Task from './Task';
 
 type props = {

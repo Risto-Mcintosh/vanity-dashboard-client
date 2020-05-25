@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { DropResult, DraggableLocation } from 'react-beautiful-dnd';
-import { kanbanDataMap, kanbanColumn } from './kanban.types';
+import { kanbanDataMap, kanbanColumn } from '../../types';
 
 export default class DragNDrop {
   source: DraggableLocation;
@@ -23,7 +23,7 @@ export default class DragNDrop {
     this.finishColumn = kanbanData.columns[destination!.droppableId];
   }
 
-  isSamePosition() {
+  inSamePosition() {
     return (
       this.source.index === this.destination.index &&
       this.source.droppableId === this.destination.droppableId
@@ -44,7 +44,7 @@ export default class DragNDrop {
     return newColumnOrder;
   }
 
-  isSameColumn() {
+  inSameColumn() {
     return this.startColumn === this.finishColumn;
   }
 

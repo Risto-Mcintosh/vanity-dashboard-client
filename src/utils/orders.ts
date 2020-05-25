@@ -1,7 +1,7 @@
 import { Order } from '../types';
 import { useQuery, useMutation, queryCache } from 'react-query';
 import { loadingOrder } from './order-placeholder';
-import * as orderClient from './client';
+import * as orderClient from './order-client';
 
 type orderId = {
   orderId: string;

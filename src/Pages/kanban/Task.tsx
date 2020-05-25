@@ -1,6 +1,6 @@
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import { kanbanOrderDetail } from './kanban.types';
+import { kanbanOrderDetail } from '../../types';
 import { Box, styled, makeStyles } from '@material-ui/core';
 
 type props = {
