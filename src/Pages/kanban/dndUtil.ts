@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { DropResult, DraggableLocation } from 'react-beautiful-dnd';
 import { kanbanDataMap, kanbanColumn } from '../../types';
+import { MutationFunction } from 'react-query';
+
+type updateFunction = {
+  updateDataFn: MutationFunction<kanbanDataMap, kanbanDataMap>;
+};
 
 export default class DragNDrop {
   source: DraggableLocation;
@@ -9,18 +14,21 @@ export default class DragNDrop {
   data: kanbanDataMap;
   startColumn: kanbanColumn;
   finishColumn: kanbanColumn;
+  updateDataFn: MutationFunction<kanbanDataMap, kanbanDataMap>;
   constructor({
     source,
     destination,
     draggableId,
+    updateDataFn,
     ...kanbanData
-  }: DropResult & kanbanDataMap) {
+  }: DropResult & kanbanDataMap & updateFunction) {
     this.source = source;
     this.destination = destination!;
     this.draggableId = draggableId;
     this.data = kanbanData;
     this.startColumn = kanbanData.columns[source.droppableId];
     this.finishColumn = kanbanData.columns[destination!.droppableId];
+    this.updateDataFn = updateDataFn;
   }
 
   inSamePosition() {
@@ -41,7 +49,10 @@ export default class DragNDrop {
     newColumnOrder.splice(this.source.index, 1);
     newColumnOrder.splice(this.destination.index, 0, this.draggableId);
 
-    return newColumnOrder;
+    this.updateDataFn({
+      ...this.data,
+      columnOrder: newColumnOrder,
+    });
   }
 
   inSameColumn() {
@@ -53,10 +64,16 @@ export default class DragNDrop {
     newOrder.splice(this.source.index, 1);
     newOrder.splice(this.destination.index, 0, this.draggableId);
 
-    return {
-      ...this.startColumn,
-      orderIds: newOrder,
-    };
+    this.updateDataFn({
+      ...this.data,
+      columns: {
+        ...this.data.columns,
+        [this.startColumn.columnId]: {
+          ...this.startColumn,
+          orderIds: newOrder,
+        },
+      },
+    });
   }
 
   moveToNewColumn() {
@@ -66,20 +83,28 @@ export default class DragNDrop {
     const newStart = [...this.startColumn.orderIds];
     newStart.splice(this.source.index, 1);
 
+    const newStartColumn = {
+      ...this.startColumn,
+      orderIds: newStart,
+    };
+
     const newFinish = [...this.finishColumn.orderIds];
     newFinish.splice(this.destination.index, 0, this.draggableId);
 
-    return {
-      movedItem,
-      newStartColumn: {
-        ...this.startColumn,
-        orderIds: newStart,
-      },
-      newFinishColumn: {
-        ...this.finishColumn,
-        orderIds: newFinish,
-      },
+    const newFinishColumn = {
+      ...this.finishColumn,
+      orderIds: newFinish,
     };
+
+    this.updateDataFn({
+      ...this.data,
+      orders: { ...this.data.orders, [movedItem.orderId]: movedItem },
+      columns: {
+        ...this.data.columns,
+        [newStartColumn.columnId]: newStartColumn,
+        [newFinishColumn.columnId]: newFinishColumn,
+      },
+    });
   }
 }
 
