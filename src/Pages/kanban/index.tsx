@@ -1,7 +1,8 @@
 import React from 'react';
-import Column from './Column';
+import Column from './kanban-column';
 import { useKanbanData } from '../../utils/kanban';
-import KanbanContainer from './containers/Kanban';
+import KanbanContainer from './KanbanContainer';
+import KanbanItems from './kanban-item';
 
 export default function Kanban() {
   const { data } = useKanbanData();
@@ -13,12 +14,11 @@ export default function Kanban() {
         const column = data.columns[columnId];
         const orders = column.orderIds.map((id) => data.orders[id]);
         return (
-          <Column
-            key={columnId}
-            column={column}
-            orders={orders}
-            index={index}
-          />
+          <Column key={columnId} column={column} index={index}>
+            {orders.map((order, index) => (
+              <KanbanItems key={order.orderId} order={order} index={index} />
+            ))}
+          </Column>
         );
       })}
     </KanbanContainer>

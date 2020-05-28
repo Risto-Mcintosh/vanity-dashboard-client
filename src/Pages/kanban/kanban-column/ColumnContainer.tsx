@@ -1,7 +1,9 @@
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import { Paper, Box, Divider, Typography } from '@material-ui/core';
+import { Paper, Divider } from '@material-ui/core';
 import { kanbanColumn } from '../../../types';
+import ColumnHeader from './ColumnHeader';
+import DroppableArea from './DroppableArea';
 
 type props = {
   column: kanbanColumn;
@@ -31,16 +33,12 @@ export default function ColumnContainer({ column, index, children }: props) {
             ...provided.draggableProps.style,
           }}
         >
-          <Box
-            {...provided.dragHandleProps}
-            p={1}
-            fontSize="h5.fontSize"
-            textAlign="center"
-          >
-            <Typography variant="inherit">{column.columnName}</Typography>
-          </Box>
+          <ColumnHeader
+            columnName={column.columnName}
+            dragHandleProps={provided.dragHandleProps}
+          />
           <Divider />
-          {children}
+          <DroppableArea columnId={column.columnId}>{children}</DroppableArea>
         </Paper>
       )}
     </Draggable>

@@ -6,7 +6,7 @@ type props = {
   children: React.ReactNode;
 };
 
-export default function TaskContainer({ columnId, children }: props) {
+export default function DroppableArea({ columnId, children }: props) {
   return (
     <Droppable droppableId={columnId} type="task">
       {(provided) => (

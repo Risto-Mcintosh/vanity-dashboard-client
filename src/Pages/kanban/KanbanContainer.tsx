@@ -1,9 +1,9 @@
 import React from 'react';
 import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
-import DragNDrop from '../dndUtil';
+import DragNDrop from './dndUtil';
 import { Box, RootRef } from '@material-ui/core';
-import { useKanbanUpdate } from '../../../utils/kanban';
-import { kanbanDataMap } from '../../../types';
+import { useKanbanUpdate } from '../../utils/kanban';
+import { kanbanDataMap } from '../../types';
 
 type props = {
   kanbanData: kanbanDataMap;
