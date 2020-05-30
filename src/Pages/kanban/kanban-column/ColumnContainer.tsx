@@ -1,23 +1,22 @@
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { Paper, Divider } from '@material-ui/core';
-import { kanbanColumn } from '../../../types';
 import ColumnHeader from './ColumnHeader';
 import DroppableArea from './DroppableArea';
+import { useColumnContext } from './column-context';
 
 type props = {
-  column: kanbanColumn;
-  index: number;
   children: React.ReactNode;
 };
 
-export default function ColumnContainer({ column, index, children }: props) {
+export default function ColumnContainer({ children }: props) {
+  const { column, columnIndex } = useColumnContext();
   const isStartOrEnd = column.isCompleteColumn || column.isStartColumn;
   const isDragDisabled = column.columnLock || isStartOrEnd;
   return (
     <Draggable
       draggableId={column.columnId}
-      index={index}
+      index={columnIndex}
       isDragDisabled={isDragDisabled}
     >
       {(provided) => (
@@ -33,10 +32,7 @@ export default function ColumnContainer({ column, index, children }: props) {
             ...provided.draggableProps.style,
           }}
         >
-          <ColumnHeader
-            columnName={column.columnName}
-            dragHandleProps={provided.dragHandleProps}
-          />
+          <ColumnHeader dragHandleProps={provided.dragHandleProps} />
           <Divider />
           <DroppableArea columnId={column.columnId}>{children}</DroppableArea>
         </Paper>

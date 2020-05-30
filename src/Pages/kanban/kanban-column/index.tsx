@@ -1,17 +1,18 @@
 import React from 'react';
 import { kanbanColumn } from '../../../types';
 import ColumnContainer from './ColumnContainer';
+import { ColumnProvider } from './column-context';
 
 type props = {
   column: kanbanColumn;
-  index: number;
+  columnIndex: number;
   children: React.ReactNode;
 };
 
-const Column = ({ column, index, children }: props) => (
-  <ColumnContainer column={column} index={index}>
-    {children}
-  </ColumnContainer>
+const Column = ({ column, columnIndex, children }: props) => (
+  <ColumnProvider state={{ column, columnIndex }}>
+    <ColumnContainer>{children}</ColumnContainer>
+  </ColumnProvider>
 );
 
 export default Column;

@@ -1,6 +1,6 @@
 import * as kanbanClient from './kanban-client';
 import { useQuery, useMutation, queryCache } from 'react-query';
-import { kanbanDataMap } from '../types';
+import { kanbanDataMap, kanbanColumn } from '../types';
 
 function getKanbanData() {
   return kanbanClient.read().then((data) => data);
@@ -8,6 +8,27 @@ function getKanbanData() {
 
 function useKanbanData() {
   return useQuery('kanbanData', getKanbanData);
+}
+
+function updateKanbanColumn(column: kanbanColumn) {
+  const inCache = queryCache.getQueryData('kanbanData') as kanbanDataMap;
+  // if (!inCache) return
+  const columnToUpdate = inCache.columns[column.columnId];
+  const newColumn = { ...columnToUpdate, ...column };
+  return kanbanClient
+    .update({
+      ...inCache,
+      columns: { ...inCache.columns, [columnToUpdate.columnId]: newColumn },
+    })
+    .then((data) => data);
+}
+
+function useKanbanColumnUpdate() {
+  return useMutation(updateKanbanColumn, {
+    onSuccess: (data) => {
+      queryCache.setQueryData('kanbanData', data);
+    },
+  });
 }
 
 function updateKanban(kanbanData: kanbanDataMap) {
@@ -22,4 +43,4 @@ function useKanbanUpdate() {
   });
 }
 
-export { useKanbanData, useKanbanUpdate };
+export { useKanbanData, useKanbanUpdate, useKanbanColumnUpdate };
