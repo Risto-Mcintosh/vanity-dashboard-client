@@ -1,14 +1,13 @@
 import React from 'react';
 import {
-  MenuItem,
   styled,
   ClickAwayListener,
   Popover,
   MenuList,
   Box,
 } from '@material-ui/core';
-import { useColumnContext } from './column-context';
-import { useKanbanColumnUpdate } from '../../../utils/kanban';
+import { useColumnContext } from '../column-context';
+import { useKanbanColumnUpdate } from '../../../../utils/kanban';
 import colors from './colors';
 
 const Container = styled('div')({

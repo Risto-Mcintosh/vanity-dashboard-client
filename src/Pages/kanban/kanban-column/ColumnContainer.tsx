@@ -1,6 +1,6 @@
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import { Paper, Divider } from '@material-ui/core';
+import { Paper, Divider, styled, Theme } from '@material-ui/core';
 import ColumnHeader from './ColumnHeader';
 import DroppableArea from './DroppableArea';
 import { useColumnContext } from './column-context';
@@ -8,6 +8,19 @@ import { useColumnContext } from './column-context';
 type props = {
   children: React.ReactNode;
 };
+
+type ContainerProps = {
+  bgColor: string;
+  theme: Theme;
+};
+
+const Container = styled(Paper)(({ theme, bgColor }: ContainerProps) => ({
+  width: '200px',
+  display: 'flex',
+  flexDirection: 'column',
+  marginLeft: '5px',
+  backgroundColor: bgColor,
+}));
 
 export default function ColumnContainer({ children }: props) {
   const { column, columnIndex } = useColumnContext();
@@ -20,22 +33,19 @@ export default function ColumnContainer({ children }: props) {
       isDragDisabled={isDragDisabled}
     >
       {(provided) => (
-        <Paper
+        <Container
           {...provided.draggableProps}
           ref={provided.innerRef}
           variant="outlined"
+          bgColor={column.color ?? 'initial'}
           style={{
-            width: '200px',
-            display: 'flex',
-            flexDirection: 'column',
-            marginLeft: '5px',
             ...provided.draggableProps.style,
           }}
         >
           <ColumnHeader dragHandleProps={provided.dragHandleProps} />
           <Divider />
           <DroppableArea columnId={column.columnId}>{children}</DroppableArea>
-        </Paper>
+        </Container>
       )}
     </Draggable>
   );

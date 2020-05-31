@@ -1,11 +1,11 @@
 import React from 'react';
-import { Button, Menu, MenuItem, IconButton, styled } from '@material-ui/core';
+import { Menu, MenuItem, IconButton, styled } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import LockIcon from '@material-ui/icons/Lock';
 import { useColumnContext } from './column-context';
 import { useKanbanColumnUpdate } from '../../../utils/kanban';
-import ColorMenu from './ColorMenu';
-import useContrastText from './useContrastText';
+import ColorMenu from './color-menu/';
+import useContrastText from '../../../utils/useContrastText';
 
 const Container = styled('div')({
   position: 'absolute',
