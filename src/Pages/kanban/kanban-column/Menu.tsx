@@ -4,6 +4,8 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import LockIcon from '@material-ui/icons/Lock';
 import { useColumnContext } from './column-context';
 import { useKanbanColumnUpdate } from '../../../utils/kanban';
+import ColorMenu from './ColorMenu';
+import useContrastText from './useContrastText';
 
 const Container = styled('div')({
   position: 'absolute',
@@ -29,6 +31,7 @@ export default function ColumnMenu() {
   const { column } = useColumnContext();
   const [update] = useKanbanColumnUpdate();
   const [anchorRef, setAnchorRef] = React.useState<HTMLDivElement | null>(null);
+  const [isColorMenuOpen, setColorMenu] = React.useState(false);
   const ref = React.useRef<HTMLDivElement | null>(null);
 
   const handleClick = () => {
@@ -37,6 +40,7 @@ export default function ColumnMenu() {
 
   const handleClose = () => {
     setAnchorRef(null);
+    setColorMenu(false);
   };
 
   function handleColumnLock() {
@@ -49,7 +53,11 @@ export default function ColumnMenu() {
 
   return (
     <Container ref={ref}>
-      <IconButton aria-haspopup="true" onClick={handleClick}>
+      <IconButton
+        aria-haspopup="true"
+        onClick={handleClick}
+        style={{ color: useContrastText(column.color) }}
+      >
         <MoreVertIcon />
       </IconButton>
       <Menu
@@ -67,7 +75,9 @@ export default function ColumnMenu() {
             <LockIcon color={column.columnLock ? 'secondary' : 'disabled'} />
           }
         />
-        <MenuItem onClick={handleClose}>Color</MenuItem>
+        <MenuItem onClick={() => setColorMenu(true)}>
+          <ColorMenu isOpen={isColorMenuOpen} setColorMenu={setColorMenu} />
+        </MenuItem>
       </Menu>
     </Container>
   );

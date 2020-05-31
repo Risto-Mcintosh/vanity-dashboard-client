@@ -8,7 +8,8 @@
       "columnLock": true,
       "isStartColumn": true,
       "isCompleteColumn": false,
-      "orderIds": ["1", "2", "3"]
+      "orderIds": ["1", "2", "3"],
+      "color": null
     },
     "653": {
       "columnId": "653",
@@ -17,7 +18,8 @@
       "columnLock": false,
       "isStartColumn": false,
       "isCompleteColumn": false,
-      "orderIds": []
+      "orderIds": [],
+      "color": null
     },
     "321": {
       "columnId": "321",
@@ -26,7 +28,8 @@
       "columnLock": false,
       "isStartColumn": false,
       "isCompleteColumn": false,
-      "orderIds": []
+      "orderIds": [],
+      "color": null
     },
     "83": {
       "columnId": "83",
@@ -35,7 +38,8 @@
       "columnLock": true,
       "isStartColumn": false,
       "isCompleteColumn": true,
-      "orderIds": []
+      "orderIds": [],
+      "color": null
     }
   },
   "orders": {

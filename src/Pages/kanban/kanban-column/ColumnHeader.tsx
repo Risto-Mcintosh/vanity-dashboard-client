@@ -3,6 +3,7 @@ import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 import { Box, Typography } from '@material-ui/core';
 import { useColumnContext } from './column-context';
 import ColumnMenu from './Menu';
+import useContrastText from './useContrastText';
 
 type props = {
   dragHandleProps: DraggableProvidedDragHandleProps | undefined;
@@ -20,8 +21,14 @@ const ColumnHeader = ({ dragHandleProps }: props) => {
       display="flex"
       justifyContent="center"
       alignItems="center"
+      bgcolor={column.color}
     >
-      <Typography variant="inherit">{column.columnName}</Typography>
+      <Typography
+        variant="inherit"
+        style={{ color: useContrastText(column.color) }}
+      >
+        {column.columnName}
+      </Typography>
       <ColumnMenu />
     </Box>
   );

@@ -58,6 +58,7 @@ export type kanbanColumn = {
   isStartColumn: boolean;
   isCompleteColumn: boolean;
   orderIds: string[];
+  color: string | null;
 };
 
 export type kanbanDataMap = {
