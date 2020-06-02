@@ -15,10 +15,11 @@ type ContainerProps = {
 };
 
 const Container = styled(Paper)(({ theme, bgColor }: ContainerProps) => ({
-  width: '200px',
+  flex: '0 0 225px',
   display: 'flex',
   flexDirection: 'column',
-  marginLeft: '5px',
+  marginLeft: '10px',
+  marginRight: '10px',
   backgroundColor: bgColor,
 }));
 

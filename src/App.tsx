@@ -8,6 +8,7 @@ import Orders from './Pages/orders';
 import Products from './Pages/products';
 import Kanban from './Pages/kanban';
 import OrderDetail from './Components/order-detail';
+import './app.css';
 
 const Reports = () => <h1 style={{ marginTop: '64px' }}>Reports</h1>;
 

@@ -8,6 +8,8 @@ type props = {
 };
 const Container = styled('div')(({ theme }) => ({
   minHeight: '100px',
+  maxHeight: '550px',
+  overflowY: 'auto',
   flexGrow: 1,
   padding: theme.spacing(1),
 }));

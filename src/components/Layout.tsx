@@ -10,6 +10,9 @@ import {
   Drawer,
   Hidden,
   Container,
+  styled,
+  Theme,
+  ContainerProps,
 } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -53,6 +56,15 @@ type props = {
   children: React.ReactNode;
 };
 
+type containerProps = {
+  theme: Theme;
+};
+
+const KanbanPage = styled('main')(({ theme }: containerProps) => ({
+  maxWidth: '850px',
+  paddingTop: theme.spacing(4),
+}));
+
 function Layout({ children }: props) {
   const { pathname } = useLocation();
   const classes = useStyles();
@@ -60,7 +72,13 @@ function Layout({ children }: props) {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+  function MainSection(page: string) {
+    if (page === 'Kanban') {
+      return <KanbanPage>{children}</KanbanPage>;
+    }
 
+    return <Container className={classes.container}>{children}</Container>;
+  }
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -108,12 +126,10 @@ function Layout({ children }: props) {
           </Drawer>
         </Hidden>
       </nav>
-      <main className={classes.content}>
+      <div className={classes.content}>
         <div className={classes.toolbar} />
-        <Container className={classes.container} maxWidth="lg">
-          {children}
-        </Container>
-      </main>
+        {MainSection(pageName(pathname))}
+      </div>
     </div>
   );
 }

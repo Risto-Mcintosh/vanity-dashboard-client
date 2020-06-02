@@ -1,7 +1,7 @@
 import React from 'react';
 import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
 import DragNDrop from './dndUtil';
-import { Box, RootRef } from '@material-ui/core';
+import { Box, RootRef, styled } from '@material-ui/core';
 import { useKanbanUpdate } from '../../utils/kanban';
 import { kanbanDataMap } from '../../types';
 
@@ -9,6 +9,17 @@ type props = {
   kanbanData: kanbanDataMap;
   children: React.ReactNode;
 };
+
+const Container = styled('div')(({ theme }) => ({
+  // display: 'grid',
+  // gridTemplateColumns: 'repeat(auto-fit, 200px)',
+  // gridColumnGap: '25px',
+  // gridAutoFlow: 'column',
+  display: 'flex',
+  alignItems: 'flex-start',
+  overflowX: 'auto',
+  paddingBottom: theme.spacing(3),
+}));
 
 export default function KanbanContainer({ kanbanData, children }: props) {
   const [mutate] = useKanbanUpdate();
@@ -42,10 +53,10 @@ export default function KanbanContainer({ kanbanData, children }: props) {
       <Droppable droppableId="all-columns" direction="horizontal" type="column">
         {(provided) => (
           <RootRef rootRef={provided.innerRef}>
-            <Box {...provided.droppableProps} display="flex">
+            <Container {...provided.droppableProps}>
               {children}
               {provided.placeholder}
-            </Box>
+            </Container>
           </RootRef>
         )}
       </Droppable>
