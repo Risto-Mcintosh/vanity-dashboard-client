@@ -1,6 +1,6 @@
-import React from 'react';
-import Navigation from './Navigation';
-import pageName from '../utils/pageName';
+import React from "react";
+import Navigation from "./Navigation";
+import pageName from "../utils/pageName";
 import {
   CssBaseline,
   AppBar,
@@ -11,45 +11,44 @@ import {
   Hidden,
   Container,
   styled,
-  Theme,
-  ContainerProps,
-} from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import { useLocation } from 'react-router-dom';
+  Theme
+} from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import { useLocation } from "react-router-dom";
 
 const drawerWidth = 200;
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
+    display: "flex"
   },
   drawer: {
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up("sm")]: {
       width: drawerWidth,
-      flexShrink: 0,
-    },
+      flexShrink: 0
+    }
   },
   appBar: {
-    zIndex: theme.zIndex.drawer + 1,
+    zIndex: theme.zIndex.drawer + 1
   },
   menuButton: {
     marginRight: theme.spacing(2),
-    [theme.breakpoints.up('sm')]: {
-      display: 'none',
-    },
+    [theme.breakpoints.up("sm")]: {
+      display: "none"
+    }
   },
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
-    width: drawerWidth,
+    width: drawerWidth
   },
   content: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   container: {
     paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
-  },
+    paddingBottom: theme.spacing(4)
+  }
 }));
 
 type props = {
@@ -60,9 +59,30 @@ type containerProps = {
   theme: Theme;
 };
 
-const KanbanPage = styled('main')(({ theme }: containerProps) => ({
-  maxWidth: '850px',
+const KanbanPage = styled("main")(({ theme }: containerProps) => ({
   paddingTop: theme.spacing(4),
+  maxWidth: "375px",
+  marginLeft: "auto",
+  marginRight: "auto",
+  paddingLeft: theme.spacing(1),
+  paddingRight: theme.spacing(1),
+
+  [theme.breakpoints.up(400)]: {
+    maxWidth: "445px"
+  },
+  [theme.breakpoints.up("sm")]: {
+    maxWidth: theme.breakpoints.values.sm
+  },
+  [theme.breakpoints.up("md")]: {
+    maxWidth: theme.breakpoints.values.md,
+    margin: 0
+  },
+  [theme.breakpoints.up("lg")]: {
+    maxWidth: theme.breakpoints.values.lg
+  },
+  [theme.breakpoints.up("xl")]: {
+    maxWidth: theme.breakpoints.values.xl
+  }
 }));
 
 function Layout({ children }: props) {
@@ -73,7 +93,7 @@ function Layout({ children }: props) {
     setMobileOpen(!mobileOpen);
   };
   function MainSection(page: string) {
-    if (page === 'Kanban') {
+    if (page === "Kanban") {
       return <KanbanPage>{children}</KanbanPage>;
     }
 
@@ -105,10 +125,10 @@ function Layout({ children }: props) {
             open={mobileOpen}
             onClose={handleDrawerToggle}
             classes={{
-              paper: classes.drawerPaper,
+              paper: classes.drawerPaper
             }}
             ModalProps={{
-              keepMounted: true,
+              keepMounted: true
             }}
           >
             <Navigation setMobileClose={setMobileOpen} />
@@ -117,7 +137,7 @@ function Layout({ children }: props) {
         <Hidden xsDown>
           <Drawer
             classes={{
-              paper: classes.drawerPaper,
+              paper: classes.drawerPaper
             }}
             variant="permanent"
             open

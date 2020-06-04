@@ -6,7 +6,7 @@ import ColumnMenu from './Menu';
 import useContrastText from '../../../utils/useContrastText';
 
 type props = {
-  dragHandleProps: DraggableProvidedDragHandleProps | undefined;
+  dragHandleProps?: DraggableProvidedDragHandleProps | undefined;
 };
 
 const ColumnHeader = ({ dragHandleProps }: props) => {

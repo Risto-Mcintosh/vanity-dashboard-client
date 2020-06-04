@@ -1,14 +1,14 @@
-import React from 'react';
-import { Menu, MenuItem, IconButton, styled } from '@material-ui/core';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import LockIcon from '@material-ui/icons/Lock';
-import { useColumnContext } from './column-context';
-import { useKanbanColumnUpdate } from '../../../utils/kanban';
-import ColorMenu from './color-menu/';
-import useContrastText from '../../../utils/useContrastText';
+import React from "react";
+import { Menu, MenuItem, IconButton, styled } from "@material-ui/core";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import LockIcon from "@material-ui/icons/Lock";
+import { useColumnContext } from "./column-context";
+import { useKanbanColumnUpdate } from "../../../utils/kanban";
+import ColorMenu from "./color-menu/";
+import useContrastText from "../../../utils/useContrastText";
 
-const Container = styled('div')({
-  position: 'absolute',
+const Container = styled("div")({
+  position: "absolute",
   right: 0,
 });
 
@@ -21,7 +21,7 @@ type props = {
 const CustomMenuItem = ({ title, handleFunction, component }: props) => (
   <MenuItem
     onClick={handleFunction}
-    style={{ display: 'flex', justifyContent: 'space-between' }}
+    style={{ display: "flex", justifyContent: "space-between" }}
   >
     {title} {component}
   </MenuItem>
@@ -68,13 +68,12 @@ export default function ColumnMenu() {
         onClose={handleClose}
       >
         <MenuItem onClick={handleClose}>Edit Name</MenuItem>
-        <CustomMenuItem
-          title="Lock"
-          handleFunction={handleColumnLock}
-          component={
-            <LockIcon color={column.columnLock ? 'secondary' : 'disabled'} />
-          }
-        />
+        <MenuItem
+          onClick={handleColumnLock}
+          style={{ display: "flex", justifyContent: "space-between" }}
+        >
+          Lock <LockIcon color={column.columnLock ? "secondary" : "disabled"} />
+        </MenuItem>
         <MenuItem onClick={() => setColorMenu(true)}>
           <ColorMenu isOpen={isColorMenuOpen} setColorMenu={setColorMenu} />
         </MenuItem>

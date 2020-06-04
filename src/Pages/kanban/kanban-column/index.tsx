@@ -9,10 +9,13 @@ type props = {
   children: React.ReactNode;
 };
 
-const Column = ({ column, columnIndex, children }: props) => (
+const Column = ({ column, columnIndex, children }: props) => {
+return (
   <ColumnProvider state={{ column, columnIndex }}>
     <ColumnContainer>{children}</ColumnContainer>
   </ColumnProvider>
 );
+
+}
 
 export default Column;

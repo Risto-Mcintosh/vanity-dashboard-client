@@ -16,8 +16,8 @@ const Container = styled('div')({
 
 type ColorSqProps = {
   color: string;
-  margin?: boolean;
-  small?: boolean;
+  margin?: string;
+  small?: string;
 };
 
 const ColorSq = styled('span')({
@@ -55,7 +55,7 @@ export default function ColorMenu({ isOpen, setColorMenu }: props) {
   return (
     <Container ref={ref}>
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        Color <ColorSq color={!column.color ? '#fafafa' : column.color} small />
+        Color <ColorSq color={!column.color ? '#fafafa' : column.color} small='true' />
       </Box>
       <Popover
         open={isOpen}
@@ -74,12 +74,12 @@ export default function ColorMenu({ isOpen, setColorMenu }: props) {
                 <ColorSq
                   color={dark}
                   onClick={() => handleColorChange(dark)}
-                  margin
+                  margin="true"
                 />
                 <ColorSq
                   color={light}
                   onClick={() => handleColorChange(light)}
-                  margin
+                  margin="true"
                 />
               </Box>
             ))}

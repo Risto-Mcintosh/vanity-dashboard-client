@@ -3,7 +3,7 @@ import OrdersTable from '../../Components/order-table';
 import { useListOrders } from '../../utils/orders';
 
 function Orders() {
-  const { orders, status, error } = useListOrders();
+  const { orders } = useListOrders();
 
   return (
     <div>
