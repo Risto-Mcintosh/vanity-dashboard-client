@@ -18,15 +18,6 @@ type props = {
   component: React.ReactNode;
 };
 
-const CustomMenuItem = ({ title, handleFunction, component }: props) => (
-  <MenuItem
-    onClick={handleFunction}
-    style={{ display: "flex", justifyContent: "space-between" }}
-  >
-    {title} {component}
-  </MenuItem>
-);
-
 export default function ColumnMenu() {
   const { column } = useColumnContext();
   const [update] = useKanbanColumnUpdate();

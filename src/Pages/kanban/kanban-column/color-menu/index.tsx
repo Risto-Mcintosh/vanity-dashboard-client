@@ -1,17 +1,17 @@
-import React from 'react';
+import React from "react";
 import {
   styled,
   ClickAwayListener,
   Popover,
   MenuList,
-  Box,
-} from '@material-ui/core';
-import { useColumnContext } from '../column-context';
-import { useKanbanColumnUpdate } from '../../../../utils/kanban';
-import colors from './colors';
+  Box
+} from "@material-ui/core";
+import { useColumnContext } from "../column-context";
+import { useKanbanColumnUpdate } from "../../../../utils/kanban";
+import colors from "./colors";
 
-const Container = styled('div')({
-  width: '100%',
+const Container = styled("div")({
+  width: "100%"
 });
 
 type ColorSqProps = {
@@ -20,14 +20,14 @@ type ColorSqProps = {
   small?: string;
 };
 
-const ColorSq = styled('span')({
+const ColorSq = styled("span")({
   backgroundColor: (props: ColorSqProps) => props.color,
-  border: 'rgba(0, 0, 0, 0.26) solid 1px',
-  height: ({ small }: ColorSqProps) => (small ? '20px' : '30px'),
-  width: ({ small }: ColorSqProps) => (small ? '20px' : '30px'),
-  display: 'inline-block',
-  cursor: 'pointer',
-  margin: ({ margin }: ColorSqProps) => (margin ? '.5rem' : 0),
+  border: "rgba(0, 0, 0, 0.26) solid 1px",
+  height: ({ small }: ColorSqProps) => (small ? "20px" : "30px"),
+  width: ({ small }: ColorSqProps) => (small ? "20px" : "30px"),
+  display: "inline-block",
+  cursor: "pointer",
+  margin: ({ margin }: ColorSqProps) => (margin ? ".5rem" : 0)
 });
 
 type props = {
@@ -44,10 +44,10 @@ export default function ColorMenu({ isOpen, setColorMenu }: props) {
     update(
       {
         ...column,
-        color,
+        color
       },
       {
-        onSettled: () => setColorMenu(false),
+        onSettled: () => setColorMenu(false)
       }
     );
   }
@@ -55,31 +55,31 @@ export default function ColorMenu({ isOpen, setColorMenu }: props) {
   return (
     <Container ref={ref}>
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        Color <ColorSq color={!column.color ? '#fafafa' : column.color} small='true' />
+        Color
+        <ColorSq
+          color={!column.color ? "#fafafa" : column.color}
+          small="true"
+        />
       </Box>
       <Popover
         open={isOpen}
         anchorEl={ref.current}
-        anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+        anchorOrigin={{ horizontal: "right", vertical: "top" }}
       >
         <ClickAwayListener onClickAway={() => setColorMenu(false)}>
-          <MenuList id="simple-menu">
+          <MenuList autoFocus={isOpen} id="color-menu">
             {colors.map(({ dark, light }) => (
-              <Box
-                key={dark}
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-              >
+              <Box key={dark} display="flex" justifyContent="space-between">
                 <ColorSq
                   color={dark}
-                  onClick={() => handleColorChange(dark)}
                   margin="true"
+                  onClick={() => handleColorChange(dark)}
                 />
+
                 <ColorSq
                   color={light}
-                  onClick={() => handleColorChange(light)}
                   margin="true"
+                  onClick={() => handleColorChange(light)}
                 />
               </Box>
             ))}
