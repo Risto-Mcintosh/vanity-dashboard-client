@@ -9,16 +9,14 @@ import useContrastText from "../../../utils/useContrastText";
 
 const Container = styled("div")({
   position: "absolute",
-  right: 0,
+  right: 0
 });
 
 type props = {
-  title: string;
-  handleFunction: () => void;
-  component: React.ReactNode;
+  setNameEditor: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function ColumnMenu() {
+export default function ColumnMenu({ setNameEditor }: props) {
   const { column } = useColumnContext();
   const [update] = useKanbanColumnUpdate();
   const [anchorRef, setAnchorRef] = React.useState<HTMLDivElement | null>(null);
@@ -34,10 +32,15 @@ export default function ColumnMenu() {
     setColorMenu(false);
   };
 
+  function handleEditColumnName() {
+    setNameEditor(true);
+    handleClose();
+  }
+
   function handleColumnLock() {
     update({
       ...column,
-      columnLock: !column.columnLock,
+      columnLock: !column.columnLock
     });
     handleClose();
   }
@@ -58,7 +61,7 @@ export default function ColumnMenu() {
         open={Boolean(anchorRef)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>Edit Name</MenuItem>
+        <MenuItem onClick={handleEditColumnName}>Edit Name</MenuItem>
         <MenuItem
           onClick={handleColumnLock}
           style={{ display: "flex", justifyContent: "space-between" }}
@@ -66,7 +69,7 @@ export default function ColumnMenu() {
           Lock <LockIcon color={column.columnLock ? "secondary" : "disabled"} />
         </MenuItem>
         <MenuItem onClick={() => setColorMenu(true)}>
-          <ColorMenu isOpen={isColorMenuOpen} setColorMenu={setColorMenu} />
+          <ColorMenu isOpen={isColorMenuOpen} closeMenu={handleClose} />
         </MenuItem>
       </Menu>
     </Container>

@@ -32,10 +32,10 @@ const ColorSq = styled("span")({
 
 type props = {
   isOpen: boolean;
-  setColorMenu: React.Dispatch<React.SetStateAction<boolean>>;
+  closeMenu: () => void;
 };
 
-export default function ColorMenu({ isOpen, setColorMenu }: props) {
+export default function ColorMenu({ isOpen, closeMenu }: props) {
   const { column } = useColumnContext();
   const [update] = useKanbanColumnUpdate();
   const ref = React.useRef<HTMLDivElement | null>(null);
@@ -47,7 +47,7 @@ export default function ColorMenu({ isOpen, setColorMenu }: props) {
         color
       },
       {
-        onSettled: () => setColorMenu(false)
+        onSettled: () => closeMenu()
       }
     );
   }
@@ -66,7 +66,7 @@ export default function ColorMenu({ isOpen, setColorMenu }: props) {
         anchorEl={ref.current}
         anchorOrigin={{ horizontal: "right", vertical: "top" }}
       >
-        <ClickAwayListener onClickAway={() => setColorMenu(false)}>
+        <ClickAwayListener onClickAway={() => closeMenu()}>
           <MenuList autoFocus={isOpen} id="color-menu">
             {colors.map(({ dark, light }) => (
               <Box key={dark} display="flex" justifyContent="space-between">

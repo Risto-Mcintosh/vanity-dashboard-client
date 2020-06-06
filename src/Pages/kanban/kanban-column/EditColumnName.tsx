@@ -1,21 +1,58 @@
 import React from "react";
-import { TextField } from "@material-ui/core";
+import { TextField, Box, makeStyles } from "@material-ui/core";
 import { useColumnContext } from "./column-context";
+import { useKanbanColumnUpdate } from "../../../utils/kanban";
+import useContrastText from "../../../utils/useContrastText";
 
-export function EditColumnName() {
+type styleProps = {
+  textColor: string;
+};
+
+const useStyles = makeStyles({
+  input: {
+    color: (props: styleProps) => props.textColor
+  }
+});
+
+type props = {
+  setNameEditor: React.Dispatch<React.SetStateAction<boolean>>;
+};
+export function EditColumnName({ setNameEditor }: props) {
   const { column } = useColumnContext();
-  const [colName, setColName] = React.useState(column.columnName);
-  function handleSubmit() {
-    console.log("submitted!");
+  const [columnName, setColName] = React.useState(column.columnName);
+  const [update] = useKanbanColumnUpdate();
+  const [helperText, setHelperText] = React.useState("");
+  const classes = useStyles({ textColor: useContrastText(column.color) });
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!columnName) {
+      setHelperText("Column name is required");
+      return;
+    }
+    update(
+      { ...column, columnName },
+      {
+        onSuccess: () => setNameEditor(false)
+      }
+    );
   }
   return (
-    <form onSubmit={handleSubmit}>
+    <Box component="form" onSubmit={handleSubmit} maxWidth="75%" mx="auto">
       <TextField
         id="column-name"
-        value={colName}
-        onChange={(e) => setColName(e.target.value)}
+        required
         autoFocus
+        error={!!helperText}
+        helperText={helperText}
+        value={columnName}
+        onChange={(e) => setColName(e.target.value)}
+        onBlur={() => setNameEditor(false)}
+        color="secondary"
+        InputProps={{
+          className: classes.input
+        }}
       />
-    </form>
+    </Box>
   );
 }
