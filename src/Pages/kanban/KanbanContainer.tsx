@@ -1,10 +1,10 @@
 import React from 'react';
 import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
 import DragNDrop from './dndUtil';
-import { RootRef, styled } from '@material-ui/core';
+import { styled } from '@material-ui/core';
 import { useKanbanUpdate } from '../../utils/kanban';
 import { kanbanDataMap } from '../../types';
-
+import AddNewColumn from './AddNewColumn';
 
 type props = {
   kanbanData: kanbanDataMap;
@@ -16,10 +16,10 @@ const Container = styled('div')(({ theme }) => ({
   // gridTemplateColumns: 'repeat(auto-fit, 200px)',
   // gridColumnGap: '25px',
   // gridAutoFlow: 'column',
+  overflowX: 'auto',
   display: 'flex',
   alignItems: 'flex-start',
-  overflowX: 'auto',
-  paddingBottom: theme.spacing(3),
+  paddingBottom: theme.spacing(3)
 }));
 
 export default function KanbanContainer({ kanbanData, children }: props) {
@@ -31,7 +31,7 @@ export default function KanbanContainer({ kanbanData, children }: props) {
     const _DragNDrop = new DragNDrop({
       updateDataFn: mutate,
       ...result,
-      ...kanbanData,
+      ...kanbanData
     });
 
     if (_DragNDrop.inSamePosition()) return;
@@ -53,12 +53,11 @@ export default function KanbanContainer({ kanbanData, children }: props) {
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="all-columns" direction="horizontal" type="column">
         {(provided) => (
-          <RootRef rootRef={provided.innerRef}>
-            <Container {...provided.droppableProps}>
-              {children}
-              {provided.placeholder}
-            </Container>
-          </RootRef>
+          <Container ref={provided.innerRef} {...provided.droppableProps}>
+            {children}
+            {provided.placeholder}
+            <AddNewColumn />
+          </Container>
         )}
       </Droppable>
     </DragDropContext>

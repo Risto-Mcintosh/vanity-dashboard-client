@@ -1,6 +1,6 @@
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import { Paper, Divider, styled,PaperProps, RootRef } from '@material-ui/core';
+import { Paper, Divider, styled, PaperProps, RootRef } from '@material-ui/core';
 import ColumnHeader from './ColumnHeader';
 import DroppableArea from './DroppableArea';
 import { useColumnContext } from './column-context';
@@ -13,15 +13,20 @@ type ContainerProps = {
   bgColor: string;
 };
 
-const Container = styled(({ bgColor, ...other }: ContainerProps & Omit<PaperProps, keyof ContainerProps>) => (
-  <Paper {...other} />
-))({
+const Container = styled(
+  ({
+    bgColor,
+    ...other
+  }: ContainerProps & Omit<PaperProps, keyof ContainerProps>) => (
+    <Paper {...other} />
+  )
+)({
   flex: '0 0 225px',
   display: 'flex',
   flexDirection: 'column',
   marginLeft: '10px',
   marginRight: '10px',
-  backgroundColor: ({bgColor}: ContainerProps) => bgColor,
+  backgroundColor: ({ bgColor }: ContainerProps) => bgColor
 });
 
 export default function ColumnContainer({ children }: props) {
@@ -41,7 +46,7 @@ export default function ColumnContainer({ children }: props) {
             variant="outlined"
             bgColor={column.color ?? 'initial'}
             style={{
-              ...provided.draggableProps.style,
+              ...provided.draggableProps.style
             }}
           >
             <ColumnHeader dragHandleProps={provided.dragHandleProps} />

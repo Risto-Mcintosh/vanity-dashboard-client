@@ -1,17 +1,17 @@
-import React from 'react';
-import { Droppable } from 'react-beautiful-dnd';
-import { styled } from '@material-ui/core';
+import React from "react";
+import { Droppable } from "react-beautiful-dnd";
+import { styled } from "@material-ui/core";
 
 type props = {
   columnId: string;
   children: React.ReactNode;
 };
-const Container = styled('div')(({ theme }) => ({
-  minHeight: '100px',
-  maxHeight: '550px',
-  overflowY: 'auto',
+const Container = styled("div")(({ theme }) => ({
+  minHeight: "100px",
+  maxHeight: "550px",
+  overflowY: "auto",
   flexGrow: 1,
-  padding: theme.spacing(1),
+  padding: theme.spacing(1)
 }));
 
 export default function DroppableArea({ columnId, children }: props) {
