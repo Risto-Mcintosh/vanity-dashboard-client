@@ -10,12 +10,11 @@ type props = {
 };
 
 const Column = ({ column, columnIndex, children }: props) => {
-return (
-  <ColumnProvider state={{ column, columnIndex }}>
-    <ColumnContainer>{children}</ColumnContainer>
-  </ColumnProvider>
-);
-
-}
+  return (
+    <ColumnProvider state={{ column, columnIndex }}>
+      <ColumnContainer>{children}</ColumnContainer>
+    </ColumnProvider>
+  );
+};
 
 export default Column;

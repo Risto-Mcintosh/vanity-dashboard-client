@@ -18,4 +18,4 @@ const KanbanItems = ({ order, index }: props) => (
   />
 );
 
-export default KanbanItems;
+export default React.memo(KanbanItems);

@@ -44,7 +44,7 @@ export default function ColumnContainer({ children }: props) {
           <Container
             {...provided.draggableProps}
             variant="outlined"
-            bgColor={column.color ?? 'initial'}
+            bgColor={column.color ?? '#fff'}
             style={{
               ...provided.draggableProps.style
             }}

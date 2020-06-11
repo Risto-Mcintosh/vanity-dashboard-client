@@ -4,8 +4,10 @@ import {
   ClickAwayListener,
   Popover,
   MenuList,
-  Box
+  Box,
+  MenuItem
 } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 import { useColumnContext } from '../column-context';
 import { useKanbanColumnUpdate } from '../../../../utils/kanban';
 import colors from './colors';
@@ -40,7 +42,7 @@ export default function ColorMenu({ isOpen, closeMenu }: props) {
   const [update] = useKanbanColumnUpdate();
   const ref = React.useRef<HTMLDivElement | null>(null);
 
-  function handleColorChange(color: string) {
+  function handleColorChange(color: string | null) {
     update(
       {
         ...column,
@@ -68,6 +70,12 @@ export default function ColorMenu({ isOpen, closeMenu }: props) {
       >
         <ClickAwayListener onClickAway={() => closeMenu()}>
           <MenuList autoFocus={isOpen} id="color-menu">
+            <MenuItem
+              onClick={() => handleColorChange(null)}
+              style={{ justifyContent: 'center' }}
+            >
+              None
+            </MenuItem>
             {colors.map(({ dark, light }) => (
               <Box key={dark} display="flex" justifyContent="space-between">
                 <ColorSq

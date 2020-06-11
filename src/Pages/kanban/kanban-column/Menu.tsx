@@ -19,7 +19,7 @@ type props = {
   setNameEditor: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function ColumnMenu({ setNameEditor }: props) {
+function ColumnMenu({ setNameEditor }: props) {
   const { column } = useColumnContext();
   const [update] = useKanbanColumnUpdate();
   const [deleteColumn] = useKanbanColumnDelete();
@@ -89,3 +89,5 @@ export default function ColumnMenu({ setNameEditor }: props) {
     </Container>
   );
 }
+
+export default ColumnMenu;
