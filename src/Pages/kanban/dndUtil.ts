@@ -51,7 +51,7 @@ export default class DragNDrop {
 
     this.updateDataFn({
       ...this.data,
-      columnOrder: newColumnOrder,
+      columnOrder: newColumnOrder
     });
   }
 
@@ -70,9 +70,9 @@ export default class DragNDrop {
         ...this.data.columns,
         [this.startColumn.columnId]: {
           ...this.startColumn,
-          orderIds: newOrder,
-        },
-      },
+          orderIds: newOrder
+        }
+      }
     });
   }
 
@@ -85,7 +85,7 @@ export default class DragNDrop {
 
     const newStartColumn = {
       ...this.startColumn,
-      orderIds: newStart,
+      orderIds: newStart
     };
 
     const newFinish = [...this.finishColumn.orderIds];
@@ -93,7 +93,7 @@ export default class DragNDrop {
 
     const newFinishColumn = {
       ...this.finishColumn,
-      orderIds: newFinish,
+      orderIds: newFinish
     };
 
     this.updateDataFn({
@@ -102,84 +102,8 @@ export default class DragNDrop {
       columns: {
         ...this.data.columns,
         [newStartColumn.columnId]: newStartColumn,
-        [newFinishColumn.columnId]: newFinishColumn,
-      },
+        [newFinishColumn.columnId]: newFinishColumn
+      }
     });
   }
 }
-
-// function isSamePosition({ source, destination }: DropResult) {
-//   return (
-//     source.index === destination!.index &&
-//     source.droppableId === destination!.droppableId
-//   );
-// }
-
-// function updateColumnOrder({
-//   source,
-//   destination,
-//   draggableId,
-//   ...kanbanData
-// }: DropResult & kanbanDataMap) {
-//   const columnId = kanbanData.columnOrder[destination!.index];
-//   const destinationColumn = kanbanData.columns[columnId];
-
-//   if (destinationColumn.isStartColumn || destinationColumn.isCompleteColumn)
-//     return kanbanData.columnOrder;
-
-//   const newColumnOrder = [...kanbanData.columnOrder];
-//   newColumnOrder.splice(source.index, 1);
-//   newColumnOrder.splice(destination!.index, 0, draggableId);
-
-//   return newColumnOrder;
-// }
-
-// function reorderWithinColumn({
-//   source,
-//   destination,
-//   draggableId,
-//   ...kanbanData
-// }: DropResult & kanbanDataMap) {
-//   const column = kanbanData.columns[source.droppableId];
-//   const newOrder = [...column.orderIds];
-//   newOrder.splice(source.index, 1);
-//   newOrder.splice(destination!.index, 0, draggableId);
-
-//   return {
-//     ...column,
-//     orderIds: newOrder,
-//   };
-// }
-
-// function moveToNewColumn({
-//   source,
-//   destination,
-//   draggableId,
-//   ...kanbanData
-// }: DropResult & kanbanDataMap) {
-//   const startColumn = kanbanData.columns[source.droppableId];
-//   const finishColumn = kanbanData.columns[destination!.droppableId];
-
-//   const movedItem = kanbanData.orders[draggableId];
-//   movedItem.kanbanColumnId = destination!.droppableId;
-
-//   const newStart = [...startColumn.orderIds];
-//   newStart.splice(source.index, 1);
-
-//   const newFinish = [...finishColumn.orderIds];
-//   newFinish.splice(destination!.index, 0, draggableId);
-
-//   return {
-//     movedItem,
-//     newStartColumn: {
-//       ...startColumn,
-//       orderIds: newStart,
-//     },
-//     newFinishColumn: {
-//       ...finishColumn,
-//       orderIds: newFinish,
-//     },
-//   };
-// }
-
-//export { isSamePosition, updateColumnOrder, moveToNewColumn,reorderWithinColumn };

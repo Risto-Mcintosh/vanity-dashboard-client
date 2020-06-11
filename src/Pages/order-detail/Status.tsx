@@ -4,22 +4,22 @@ import { Order } from '../../types';
 import formatDate from '../../utils/formatDate';
 import { MutationOptions } from 'react-query';
 import OrderStatusIcon from './OrderStatusIcon';
-import DatePicker from '../DatePicker';
+import DatePicker from '../../Components/DatePicker';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: `${theme.spacing(2)}px 0`,
-    marginTop: theme.spacing(4),
+    marginTop: theme.spacing(4)
   },
   orderStatus: {
-    marginLeft: theme.spacing(1),
+    marginLeft: theme.spacing(1)
   },
   orderTotal: {
-    fontSize: '1.3em',
+    fontSize: '1.3em'
   },
   space: {
-    padding: '9px 0',
-  },
+    padding: '9px 0'
+  }
 }));
 
 type props = {
