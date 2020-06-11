@@ -9,22 +9,20 @@ async function update(newData: kanbanDataMap): Promise<kanbanDataMap> {
   return { ...kanbanData, ...newData };
 }
 
-async function add(newColumn: kanbanColumn): Promise<kanbanDataMap> {
-  const col = {
-    ...newColumn,
+async function create(columnName: string): Promise<kanbanColumn> {
+  return {
+    columnName,
+    columnId: Math.floor(Math.random() * 10).toString(),
     columnLock: false,
     isStartColumn: false,
     isCompleteColumn: false,
     orderIds: [],
     color: null
   };
-  return {
-    ...kanbanData,
-    columns: {
-      ...kanbanData.columns,
-      [newColumn.columnId]: col
-    }
-  };
 }
 
-export { read, update, add };
+async function remove(columnId: string) {
+  return columnId;
+}
+
+export { read, update, create, remove };

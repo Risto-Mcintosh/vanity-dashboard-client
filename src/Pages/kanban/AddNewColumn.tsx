@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import AddIcon from '@material-ui/icons/Add';
+import { useKanbanColumnCreate } from '../../utils/kanban';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -42,9 +43,16 @@ const StyledTextField = withStyles((theme) => ({
 export default function AddNewColumn() {
   const classes = useStyles();
   const theme = useTheme();
+  const [update] = useKanbanColumnCreate();
   const [helperText, setHelperText] = React.useState('');
   const [showInput, setInput] = React.useState(false);
   const [newColumnName, setColumnName] = React.useState('');
+
+  function reset() {
+    setInput(false);
+    setHelperText('');
+    setColumnName('');
+  }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -52,8 +60,9 @@ export default function AddNewColumn() {
       setHelperText('Required');
       return;
     }
-
-    setInput(false);
+    update(newColumnName, {
+      onSuccess: () => reset()
+    });
   }
   return (
     <div className={classes.container}>
@@ -93,7 +102,7 @@ export default function AddNewColumn() {
           </Button>
           <IconButton
             className={classes.cancelButton}
-            onClick={() => setInput(false)}
+            onClick={() => reset()}
             aria-label="Cancel"
           >
             <CloseIcon />

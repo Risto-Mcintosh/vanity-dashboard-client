@@ -18,7 +18,7 @@ function updateKanbanColumn(column: kanbanColumn) {
   return kanbanClient
     .update({
       ...inCache,
-      columns: { ...inCache.columns, [columnToUpdate.columnId]: newColumn },
+      columns: { ...inCache.columns, [columnToUpdate.columnId]: newColumn }
     })
     .then((data) => data);
 }
@@ -27,7 +27,7 @@ function useKanbanColumnUpdate() {
   return useMutation(updateKanbanColumn, {
     onSuccess: (data) => {
       queryCache.setQueryData('kanbanData', data);
-    },
+    }
   });
 }
 
@@ -39,8 +39,56 @@ function useKanbanUpdate() {
   return useMutation(updateKanban, {
     onMutate: (data) => {
       queryCache.setQueryData('kanbanData', data);
-    },
+    }
   });
 }
 
-export { useKanbanData, useKanbanUpdate, useKanbanColumnUpdate };
+function createNewColumn(columnName: string) {
+  return kanbanClient.create(columnName).then((data) => data);
+}
+
+function updateColumnOrder(columnOrder: string[], columnId: string) {
+  const order = [...columnOrder];
+  const secondToLast = order.length - 1;
+  order.splice(secondToLast, 0, columnId);
+  return order;
+}
+function useKanbanColumnCreate() {
+  return useMutation(createNewColumn, {
+    onSuccess: (data) => {
+      const inCache = queryCache.getQueryData('kanbanData') as kanbanDataMap;
+      queryCache.setQueryData('kanbanData', {
+        ...inCache,
+        columnOrder: updateColumnOrder(inCache.columnOrder, data.columnId),
+        columns: {
+          ...inCache.columns,
+          [data.columnId]: data
+        }
+      });
+    }
+  });
+}
+
+function deleteColumn(columnId: string) {
+  return kanbanClient.remove(columnId);
+}
+//TODO this should trigger a refetch for kanbadData
+function useKanbanColumnDelete() {
+  return useMutation(deleteColumn, {
+    onSuccess: (data) => {
+      const inCache = queryCache.getQueryData('kanbanData') as kanbanDataMap;
+      queryCache.setQueryData('kanbanData', {
+        ...inCache,
+        columnOrder: inCache.columnOrder.filter((col) => col !== data)
+      });
+    }
+  });
+}
+
+export {
+  useKanbanData,
+  useKanbanUpdate,
+  useKanbanColumnUpdate,
+  useKanbanColumnCreate,
+  useKanbanColumnDelete
+};
