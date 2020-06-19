@@ -12,9 +12,10 @@ function useListProducts() {
   return { ...results, products: data ?? [loadingProduct] };
 }
 
+// TODO remove "type" from params
 function updateProduct({
   type,
-  newProduct,
+  newProduct
 }: {
   type: string;
   newProduct: VanityComponent;
@@ -26,7 +27,7 @@ function useUpdateProduct() {
   return useMutation(updateProduct, {
     onSuccess: (data) => {
       return queryCache.setQueryData('products', data);
-    },
+    }
   });
 }
 

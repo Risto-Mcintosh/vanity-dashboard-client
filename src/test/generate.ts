@@ -11,7 +11,7 @@ const prices: {
 } = {
   Small: 150,
   Medium: 200,
-  Large: 250,
+  Large: 250
 };
 
 function generateDates() {
@@ -25,7 +25,7 @@ function generateDates() {
     orderedOn,
     paidOn,
     completedOn,
-    dueOn,
+    dueOn
   };
 }
 
@@ -37,31 +37,31 @@ function generateVanity(): Vanity {
     id: faker.random.uuid(),
     type: 'Mirror',
     size: mirrorSize,
-    price: prices[mirrorSize],
+    price: prices[mirrorSize]
   };
   const table = {
     id: faker.random.uuid(),
     type: 'Table',
     size: tableSize,
-    price: prices[tableSize],
+    price: prices[tableSize]
   };
   const baseMaterial = {
     ...mirror,
     type: 'Base Material',
-    id: faker.random.uuid(),
+    id: faker.random.uuid()
   };
   return {
     color,
     mirror,
     table,
-    baseMaterial,
+    baseMaterial
   };
 }
 
 function generateCustomer() {
   const customerName = {
     first: faker.name.firstName(),
-    last: faker.name.lastName(),
+    last: faker.name.lastName()
   };
   const id = faker.random.uuid();
   const email = faker.internet.email(customerName.first, customerName.last);
@@ -72,7 +72,7 @@ function generateCustomer() {
     id,
     email,
     name,
-    phone,
+    phone
   };
 }
 
@@ -85,9 +85,9 @@ const orders: Order[] = Array.from({ length: 10 }, (_, i) => {
   const orderStatus = faker.random.arrayElement(orderStatues);
 
   const hasDueDate = orderStatus !== 'New' && orderStatus !== 'Paid';
-
+  //faker.random.alphaNumeric(100)
   return {
-    id: faker.random.uuid(),
+    id: 1,
     customer,
     orderedOn,
     orderStatus,
@@ -96,8 +96,8 @@ const orders: Order[] = Array.from({ length: 10 }, (_, i) => {
     meta: {
       paidOn: orderStatus === 'New' ? null : paidOn,
       dueOn: hasDueDate ? dueOn : null,
-      completedOn: orderStatus === 'Complete' ? completedOn : null,
-    },
+      completedOn: orderStatus === 'Complete' ? completedOn : null
+    }
   };
 });
 

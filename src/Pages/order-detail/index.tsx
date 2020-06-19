@@ -8,12 +8,12 @@ import { useParams } from 'react-router-dom';
 
 export default function OrderDetail() {
   const { orderId } = useParams<{ orderId: string }>();
-  const { order } = useOrder(orderId);
+  const { order } = useOrder(parseInt(orderId));
   const [mutate] = useUpdateOrder();
 
   const childProps = {
     order,
-    mutateOrder: mutate,
+    mutateOrder: mutate
   };
 
   return (

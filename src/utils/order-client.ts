@@ -1,7 +1,7 @@
 import orderData from '../test/order-data.json';
 import { Order } from '../types';
 
-async function read(id: number | string) {
+async function read(id: number) {
   return (orderData.find((order) => order.id === id) as unknown) as Order;
 }
 

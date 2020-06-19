@@ -32,7 +32,7 @@ export type Meta = {
 };
 
 export type Order = {
-  id: number | string;
+  id: number;
   customer: Customer;
   vanity: Vanity;
   total: number;

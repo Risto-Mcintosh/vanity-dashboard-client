@@ -4,14 +4,14 @@ import { loadingOrder } from './order-placeholder';
 import * as orderClient from './order-client';
 
 type orderId = {
-  orderId: string;
+  orderId: number;
 };
 
 function getOrder(key: string, { orderId }: orderId) {
   return orderClient.read(orderId).then((data) => data);
 }
-
-function useOrder(orderId: string) {
+// TODO try to get data from cache first otherwise get from DB
+function useOrder(orderId: number) {
   const { data, ...results } = useQuery(['order', { orderId }], getOrder);
   return { ...results, order: data ?? loadingOrder };
 }
@@ -27,7 +27,7 @@ function useUpdateOrder() {
         ['order', { orderId: data.id.toString() }],
         data
       );
-    },
+    }
   });
 }
 
