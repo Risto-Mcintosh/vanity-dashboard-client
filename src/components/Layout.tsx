@@ -1,6 +1,6 @@
-import React from "react";
-import Navigation from "./Navigation";
-import pageName from "../utils/pageName";
+import React from 'react';
+import Navigation from './Navigation';
+import pageName from '../utils/pageName';
 import {
   CssBaseline,
   AppBar,
@@ -12,19 +12,19 @@ import {
   Container,
   styled,
   Theme
-} from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-import { useLocation } from "react-router-dom";
+} from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import { useLocation } from 'react-router-dom';
 
 const drawerWidth = 200;
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex"
+    display: 'flex'
   },
   drawer: {
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up('sm')]: {
       width: drawerWidth,
       flexShrink: 0
     }
@@ -34,8 +34,8 @@ const useStyles = makeStyles((theme) => ({
   },
   menuButton: {
     marginRight: theme.spacing(2),
-    [theme.breakpoints.up("sm")]: {
-      display: "none"
+    [theme.breakpoints.up('sm')]: {
+      display: 'none'
     }
   },
   toolbar: theme.mixins.toolbar,
@@ -52,35 +52,35 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 type props = {
-  children: React.ReactNode;
+  children: React.ReactElement[];
 };
 
 type containerProps = {
   theme: Theme;
 };
 
-const KanbanPage = styled("main")(({ theme }: containerProps) => ({
+const KanbanPage = styled('main')(({ theme }: containerProps) => ({
   paddingTop: theme.spacing(4),
-  maxWidth: "375px",
-  marginLeft: "auto",
-  marginRight: "auto",
+  maxWidth: '375px',
+  marginLeft: 'auto',
+  marginRight: 'auto',
   paddingLeft: theme.spacing(1),
   paddingRight: theme.spacing(1),
 
   [theme.breakpoints.up(400)]: {
-    maxWidth: "445px"
+    maxWidth: '445px'
   },
-  [theme.breakpoints.up("sm")]: {
+  [theme.breakpoints.up('sm')]: {
     maxWidth: theme.breakpoints.values.sm
   },
-  [theme.breakpoints.up("md")]: {
+  [theme.breakpoints.up('md')]: {
     maxWidth: theme.breakpoints.values.md,
     margin: 0
   },
-  [theme.breakpoints.up("lg")]: {
+  [theme.breakpoints.up('lg')]: {
     maxWidth: theme.breakpoints.values.lg
   },
-  [theme.breakpoints.up("xl")]: {
+  [theme.breakpoints.up('xl')]: {
     maxWidth: theme.breakpoints.values.xl
   }
 }));
@@ -93,7 +93,7 @@ function Layout({ children }: props) {
     setMobileOpen(!mobileOpen);
   };
   function MainSection(page: string) {
-    if (page === "Kanban") {
+    if (page === 'Kanban') {
       return <KanbanPage>{children}</KanbanPage>;
     }
 

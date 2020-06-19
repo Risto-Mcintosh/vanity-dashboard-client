@@ -12,13 +12,11 @@ function useKanbanData() {
 
 function updateKanbanColumn(column: kanbanColumn) {
   const inCache = queryCache.getQueryData('kanbanData') as kanbanDataMap;
-  // if (!inCache) return
-  const columnToUpdate = inCache.columns[column.columnId];
-  const newColumn = { ...columnToUpdate, ...column };
+
   return kanbanClient
     .update({
       ...inCache,
-      columns: { ...inCache.columns, [columnToUpdate.columnId]: newColumn }
+      columns: { ...inCache.columns, [column.columnId]: column }
     })
     .then((data) => data);
 }
@@ -27,7 +25,24 @@ function useKanbanColumnUpdate() {
   return useMutation(updateKanbanColumn, {
     onSuccess: (data) => {
       queryCache.setQueryData('kanbanData', data);
-    }
+    },
+    onMutate: (column) => {
+      queryCache.cancelQueries('kanbanData');
+      const previousData = queryCache.getQueryData<kanbanDataMap>('kanbanData');
+
+      if (previousData) {
+        queryCache.setQueryData<kanbanDataMap>('kanbanData', {
+          ...previousData,
+          columns: {
+            ...previousData.columns,
+            [column.columnId]: column
+          }
+        });
+      }
+    },
+    onError: (error, column, snapshotValue) =>
+      queryCache.setQueryData('kanbanData', snapshotValue),
+    onSettled: () => queryCache.refetchQueries('kanbanData')
   });
 }
 
@@ -56,15 +71,21 @@ function updateColumnOrder(columnOrder: string[], columnId: string) {
 function useKanbanColumnCreate() {
   return useMutation(createNewColumn, {
     onSuccess: (data) => {
-      const inCache = queryCache.getQueryData('kanbanData') as kanbanDataMap;
-      queryCache.setQueryData('kanbanData', {
-        ...inCache,
-        columnOrder: updateColumnOrder(inCache.columnOrder, data.columnId),
-        columns: {
-          ...inCache.columns,
-          [data.columnId]: data
-        }
-      });
+      const previousData = queryCache.getQueryData<kanbanDataMap>('kanbanData');
+
+      if (previousData) {
+        queryCache.setQueryData<kanbanDataMap>('kanbanData', {
+          ...previousData,
+          columnOrder: updateColumnOrder(
+            previousData.columnOrder,
+            data.columnId
+          ),
+          columns: {
+            ...previousData.columns,
+            [data.columnId]: data
+          }
+        });
+      }
     }
   });
 }
@@ -72,16 +93,25 @@ function useKanbanColumnCreate() {
 function deleteColumn(columnId: string) {
   return kanbanClient.remove(columnId);
 }
-//TODO this should trigger a refetch for kanbadData
+
 function useKanbanColumnDelete() {
   return useMutation(deleteColumn, {
-    onSuccess: (data) => {
-      const inCache = queryCache.getQueryData('kanbanData') as kanbanDataMap;
-      queryCache.setQueryData('kanbanData', {
-        ...inCache,
-        columnOrder: inCache.columnOrder.filter((col) => col !== data)
-      });
-    }
+    onMutate: (columnId) => {
+      queryCache.cancelQueries('kanbanData');
+      const previousData = queryCache.getQueryData<kanbanDataMap>('kanbanData');
+      if (previousData) {
+        queryCache.setQueryData('kanbanData', {
+          ...previousData,
+          columnOrder: previousData.columnOrder.filter(
+            (col) => col !== columnId
+          )
+        });
+      }
+      return previousData;
+    },
+    onError: (error, columnId, snapshotValue) =>
+      queryCache.setQueryData('kanbanData', snapshotValue),
+    onSettled: () => queryCache.refetchQueries('kanbanData')
   });
 }
 
