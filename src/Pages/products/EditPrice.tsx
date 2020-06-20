@@ -4,7 +4,7 @@ import {
   Box,
   TextField,
   Button,
-  InputAdornment,
+  InputAdornment
 } from '@material-ui/core';
 import { VanityComponent } from '../../types';
 import { useUpdateProduct } from '../../utils/products';
@@ -13,20 +13,20 @@ const useStyles = makeStyles((theme) => ({
   input: {
     maxWidth: '67%',
     '& .MuiInputBase-root': {
-      fontSize: theme.typography.pxToRem(18),
+      fontSize: theme.typography.pxToRem(18)
     },
     '& .MuiInputBase-input': {
-      marginLeft: theme.spacing(1),
-    },
+      marginLeft: theme.spacing(1)
+    }
   },
   cancelButton: {
     backgroundColor: theme.palette.error.main,
     color: theme.palette.getContrastText(theme.palette.error.main),
     marginLeft: theme.spacing(1),
     '&:hover': {
-      backgroundColor: theme.palette.error.dark,
-    },
-  },
+      backgroundColor: theme.palette.error.dark
+    }
+  }
 }));
 
 type props = {
@@ -58,12 +58,12 @@ export default function EditPrice({ product, toggleEdit }: props) {
     if (!price) {
       setFormError({
         isError: true,
-        msg: 'Price is required',
+        msg: 'Price is required'
       });
       return;
     }
 
-    mutate({ type: product.type, newProduct: { ...product, price } });
+    mutate({ ...product, price });
     clearForm();
   }
 
@@ -91,7 +91,7 @@ export default function EditPrice({ product, toggleEdit }: props) {
           setFormError({ isError: true, msg: 'Save or cancel change' })
         }
         InputProps={{
-          startAdornment: <InputAdornment position="start">$</InputAdornment>,
+          startAdornment: <InputAdornment position="start">$</InputAdornment>
         }}
         autoFocus
       />

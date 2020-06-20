@@ -29,6 +29,10 @@ export type Meta = {
   paidOn?: Date | null;
   dueOn?: Date | null;
   completedOn?: Date | null;
+  buildStatus?: {
+    kanbanColumnName: string;
+    color: string;
+  };
 };
 
 export type Order = {
