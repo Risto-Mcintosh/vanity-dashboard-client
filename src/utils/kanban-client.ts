@@ -1,6 +1,8 @@
 import kanbanData from '../test/kanban-data.json';
 import { kanbanDataMap, kanbanColumn } from '../types';
 
+//TODO add single api-client
+// see https://github.com/kentcdodds/bookshelf/blob/master/src/utils/api-client.js
 async function read() {
   return kanbanData as kanbanDataMap;
 }

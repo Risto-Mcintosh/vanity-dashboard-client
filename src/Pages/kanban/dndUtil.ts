@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { DropResult, DraggableLocation } from 'react-beautiful-dnd';
 import { kanbanDataMap, kanbanColumn } from '../../types';
-import { MutationFunction } from 'react-query';
+import { MutationFunction, queryCache } from 'react-query';
+import * as queryKey from '../../utils/queryKeys';
 
 type updateFunction = {
   updateDataFn: MutationFunction<kanbanDataMap, kanbanDataMap>;
@@ -49,10 +50,15 @@ export default class DragNDrop {
     newColumnOrder.splice(this.source.index, 1);
     newColumnOrder.splice(this.destination.index, 0, this.draggableId);
 
-    this.updateDataFn({
+    queryCache.setQueryData(queryKey.KANBAN_DATA, {
       ...this.data,
       columnOrder: newColumnOrder
     });
+
+    // this.updateDataFn({
+    //   ...this.data,
+    //   columnOrder: newColumnOrder
+    // });
   }
 
   inSameColumn() {
@@ -64,7 +70,7 @@ export default class DragNDrop {
     newOrder.splice(this.source.index, 1);
     newOrder.splice(this.destination.index, 0, this.draggableId);
 
-    this.updateDataFn({
+    queryCache.setQueryData(queryKey.KANBAN_DATA, {
       ...this.data,
       columns: {
         ...this.data.columns,
@@ -96,7 +102,7 @@ export default class DragNDrop {
       orderIds: newFinish
     };
 
-    this.updateDataFn({
+    queryCache.setQueryData(queryKey.KANBAN_DATA, {
       ...this.data,
       orders: { ...this.data.orders, [movedItem.orderId]: movedItem },
       columns: {
@@ -105,5 +111,15 @@ export default class DragNDrop {
         [newFinishColumn.columnId]: newFinishColumn
       }
     });
+
+    // this.updateDataFn({
+    //   ...this.data,
+    //   orders: { ...this.data.orders, [movedItem.orderId]: movedItem },
+    //   columns: {
+    //     ...this.data.columns,
+    //     [newStartColumn.columnId]: newStartColumn,
+    //     [newFinishColumn.columnId]: newFinishColumn
+    //   }
+    // });
   }
 }

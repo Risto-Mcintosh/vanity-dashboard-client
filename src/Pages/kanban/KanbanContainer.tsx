@@ -28,6 +28,7 @@ export default function KanbanContainer({ kanbanData, children }: props) {
   function onDragEnd(result: DropResult) {
     if (!result.destination) return;
 
+    // TODO add updateColumnOrder and updateOrder functions
     const _DragNDrop = new DragNDrop({
       updateDataFn: mutate,
       ...result,

@@ -4,59 +4,39 @@ import { loadingOrder } from './order-placeholder';
 import * as orderClient from './order-client';
 import * as queryKey from './queryKeys';
 
-type orderId = {
-  orderId: number;
-};
-
-function getOrder(key: string, { orderId }: orderId) {
-  return orderClient.read(orderId).then((data) => data);
-}
-
 function useOrder(orderId: number) {
-  const { data, ...results } = useQuery(
-    [queryKey.ORDER, { orderId }],
-    getOrder
-  );
+  const { data, ...results } = useQuery({
+    queryKey: queryKey.ORDER,
+    queryFn: () => orderClient.read(orderId).then((data) => data)
+  });
   return { ...results, order: data ?? loadingOrder };
 }
 
-function updateOrder(newOrder: Order) {
-  return orderClient.update(newOrder).then((data) => data);
+function onUpdateMutate(order: Order) {
+  const previousData = queryCache.getQueryData<Order>(queryKey.ORDER);
+  if (previousData) {
+    queryCache.setQueryData(queryKey.ORDER, order);
+  }
+  return previousData;
 }
 
 function useUpdateOrder() {
-  return useMutation(updateOrder, {
-    onMutate: (order) => {
-      const previousData = queryCache.getQueryData<Order>([
-        queryKey.ORDER,
-        { orderId: order.id.toString() }
-      ]);
-      if (previousData) {
-        queryCache.setQueryData(
-          [queryKey.ORDER, { orderId: order.id.toString() }],
-          order
-        );
+  return useMutation(
+    (newOrder: Order) => orderClient.update(newOrder).then((data) => data),
+    {
+      onMutate: onUpdateMutate,
+      onError: (error, order, snapshotValue) => {
+        queryCache.setQueryData(queryKey.ORDER, snapshotValue);
       }
-      return previousData;
-    },
-    onError: (error, order, snapshotValue) => {
-      queryCache.setQueryData(
-        [queryKey.ORDER, { orderId: order.id.toString() }],
-        snapshotValue
-      );
     }
-  });
-}
-
-function getOrders(key: string, { query }: { query: string }) {
-  return orderClient.list(query);
+  );
 }
 
 function useListOrders(query = '') {
-  const { data, ...results } = useQuery(
-    [queryKey.ORDERS, { query }],
-    getOrders
-  );
+  const { data, ...results } = useQuery({
+    queryKey: queryKey.ORDERS,
+    queryFn: () => orderClient.list(query)
+  });
   return { ...results, orders: data ?? [loadingOrder] };
 }
 
