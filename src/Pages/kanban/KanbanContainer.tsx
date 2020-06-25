@@ -2,7 +2,10 @@ import React from 'react';
 import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
 import DragNDrop from './dndUtil';
 import { styled } from '@material-ui/core';
-import { useKanbanUpdate } from '../../utils/kanban';
+import {
+  useKanbanColumnOrderUpdate,
+  useKanbanPositionUpdate
+} from '../../utils/kanban';
 import { kanbanDataMap } from '../../types';
 import AddNewColumn from './AddNewColumn';
 
@@ -23,14 +26,15 @@ const Container = styled('div')(({ theme }) => ({
 }));
 
 export default function KanbanContainer({ kanbanData, children }: props) {
-  const [mutate] = useKanbanUpdate();
+  const [columnOrder] = useKanbanColumnOrderUpdate();
+  const [orderPosition] = useKanbanPositionUpdate();
 
   function onDragEnd(result: DropResult) {
     if (!result.destination) return;
 
     // TODO add updateColumnOrder and updateOrder functions
     const _DragNDrop = new DragNDrop({
-      updateDataFn: mutate,
+      updateFn: { columnOrder, orderPosition },
       ...result,
       ...kanbanData
     });

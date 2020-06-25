@@ -2,7 +2,7 @@ import * as kanbanClient from './kanban-client';
 import { client } from './api-client';
 import * as queryKey from './queryKeys';
 import { useQuery, useMutation, queryCache } from 'react-query';
-import { kanbanDataMap, kanbanColumn } from '../types';
+import { kanbanDataMap, kanbanColumn, kanbanOrderDetail } from '../types';
 
 function useKanbanData() {
   return useQuery({
@@ -46,14 +46,16 @@ function useKanbanColumnUpdate() {
   );
 }
 
-function useKanbanUpdate() {
+function useKanbanColumnOrderUpdate() {
   return useMutation(
-    (kanbanData: kanbanDataMap) =>
-      kanbanClient.update(kanbanData).then((data) => data),
+    (columnOrder: string[]) =>
+      client<string[]>('/kanban-board', {
+        data: columnOrder,
+        method: 'PUT'
+      }).then((data) => data),
     {
-      onMutate: (data) => {
-        queryCache.setQueryData(queryKey.KANBAN_DATA, data);
-      }
+      onError: (error) => console.log(error),
+      onSettled: (columnOrder) => console.log(columnOrder)
     }
   );
 }
@@ -118,10 +120,18 @@ function useKanbanColumnDelete() {
   });
 }
 
+function useKanbanPositionUpdate() {
+  return useMutation((order: kanbanOrderDetail) => Promise.resolve(order), {
+    onError: (error) => console.log(error),
+    onSettled: (order) => console.log(order)
+  });
+}
+
 export {
   useKanbanData,
-  useKanbanUpdate,
+  useKanbanColumnOrderUpdate,
   useKanbanColumnUpdate,
   useKanbanColumnCreate,
-  useKanbanColumnDelete
+  useKanbanColumnDelete,
+  useKanbanPositionUpdate
 };

@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { DropResult, DraggableLocation } from 'react-beautiful-dnd';
-import { kanbanDataMap, kanbanColumn } from '../../types';
+import { kanbanDataMap, kanbanColumn, kanbanOrderDetail } from '../../types';
 import { MutationFunction, queryCache } from 'react-query';
 import * as queryKey from '../../utils/queryKeys';
 
-type updateFunction = {
-  updateDataFn: MutationFunction<kanbanDataMap, kanbanDataMap>;
+type updateFunctions = {
+  columnOrder: MutationFunction<string[], string[]>;
+  orderPosition: MutationFunction<kanbanOrderDetail, kanbanOrderDetail>;
 };
 
 export default class DragNDrop {
@@ -15,21 +16,21 @@ export default class DragNDrop {
   data: kanbanDataMap;
   startColumn: kanbanColumn;
   finishColumn: kanbanColumn;
-  updateDataFn: MutationFunction<kanbanDataMap, kanbanDataMap>;
+  updateFn: updateFunctions;
   constructor({
     source,
     destination,
     draggableId,
-    updateDataFn,
+    updateFn,
     ...kanbanData
-  }: DropResult & kanbanDataMap & updateFunction) {
+  }: DropResult & kanbanDataMap & { updateFn: updateFunctions }) {
     this.source = source;
     this.destination = destination!;
     this.draggableId = draggableId;
     this.data = kanbanData;
     this.startColumn = kanbanData.columns[source.droppableId];
     this.finishColumn = kanbanData.columns[destination!.droppableId];
-    this.updateDataFn = updateDataFn;
+    this.updateFn = updateFn;
   }
 
   inSamePosition() {
@@ -55,10 +56,7 @@ export default class DragNDrop {
       columnOrder: newColumnOrder
     });
 
-    // this.updateDataFn({
-    //   ...this.data,
-    //   columnOrder: newColumnOrder
-    // });
+    this.updateFn.columnOrder(newColumnOrder);
   }
 
   inSameColumn() {
@@ -83,8 +81,8 @@ export default class DragNDrop {
   }
 
   moveToNewColumn() {
-    const movedItem = this.data.orders[this.draggableId];
-    movedItem.kanbanColumnId = this.destination.droppableId;
+    const movedOrder = this.data.orders[this.draggableId];
+    movedOrder.kanbanColumnId = this.destination.droppableId;
 
     const newStart = [...this.startColumn.orderIds];
     newStart.splice(this.source.index, 1);
@@ -104,7 +102,7 @@ export default class DragNDrop {
 
     queryCache.setQueryData(queryKey.KANBAN_DATA, {
       ...this.data,
-      orders: { ...this.data.orders, [movedItem.orderId]: movedItem },
+      orders: { ...this.data.orders, [movedOrder.orderId]: movedOrder },
       columns: {
         ...this.data.columns,
         [newStartColumn.columnId]: newStartColumn,
@@ -112,14 +110,6 @@ export default class DragNDrop {
       }
     });
 
-    // this.updateDataFn({
-    //   ...this.data,
-    //   orders: { ...this.data.orders, [movedItem.orderId]: movedItem },
-    //   columns: {
-    //     ...this.data.columns,
-    //     [newStartColumn.columnId]: newStartColumn,
-    //     [newFinishColumn.columnId]: newFinishColumn
-    //   }
-    // });
+    this.updateFn.orderPosition(movedOrder);
   }
 }
