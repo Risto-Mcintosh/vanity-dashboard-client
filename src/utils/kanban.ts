@@ -1,4 +1,3 @@
-import * as kanbanClient from './kanban-client';
 import { client } from './api-client';
 import * as queryKey from './queryKeys';
 import { useQuery, useMutation, queryCache } from 'react-query';
@@ -7,7 +6,8 @@ import { kanbanDataMap, kanbanColumn, kanbanOrderDetail } from '../types';
 function useKanbanData() {
   return useQuery({
     queryKey: queryKey.KANBAN_DATA,
-    queryFn: () => client<kanbanDataMap>('/kanban-board').then((data) => data)
+    queryFn: () => client<kanbanDataMap>('/kanban-board'),
+    config: { refetchOnWindowFocus: false }
   });
 }
 
@@ -36,7 +36,7 @@ function useKanbanColumnUpdate() {
       client<kanbanColumn>(`/kanban-board/column/${column.columnId}`, {
         data: column,
         method: 'PUT'
-      }).then((data) => data),
+      }),
     {
       onMutate: onColumnUpdate,
       onError: (error, column, snapshotValue) =>
@@ -52,7 +52,7 @@ function useKanbanColumnOrderUpdate() {
       client<string[]>('/kanban-board', {
         data: columnOrder,
         method: 'PUT'
-      }).then((data) => data),
+      }),
     {
       onError: (error) => console.log(error),
       onSettled: (columnOrder) => console.log(columnOrder)
@@ -90,7 +90,9 @@ function onColumnCreate(newColumn: kanbanColumn) {
 function useKanbanColumnCreate() {
   return useMutation(
     (columnName: string) =>
-      kanbanClient.create(columnName).then((data) => data),
+      client<kanbanColumn>('/kanban-board/column', {
+        data: columnName
+      }),
     {
       onSuccess: onColumnCreate
     }
@@ -112,19 +114,30 @@ function onDeleteColumn(columnId: string) {
 }
 
 function useKanbanColumnDelete() {
-  return useMutation((columnId: string) => kanbanClient.remove(columnId), {
-    onMutate: onDeleteColumn,
-    onError: (error, columnId, snapshotValue) =>
-      queryCache.setQueryData(queryKey.KANBAN_DATA, snapshotValue),
-    onSettled: () => queryCache.refetchQueries(queryKey.KANBAN_DATA)
-  });
+  return useMutation(
+    (columnId: string) =>
+      client(`/kanban-board/column/${columnId}`, { method: 'DELETE' }),
+    {
+      onMutate: onDeleteColumn,
+      onError: (error, columnId, snapshotValue) =>
+        queryCache.setQueryData(queryKey.KANBAN_DATA, snapshotValue),
+      onSettled: () => queryCache.refetchQueries(queryKey.KANBAN_DATA)
+    }
+  );
 }
 
 function useKanbanPositionUpdate() {
-  return useMutation((order: kanbanOrderDetail) => Promise.resolve(order), {
-    onError: (error) => console.log(error),
-    onSettled: (order) => console.log(order)
-  });
+  return useMutation(
+    (order: kanbanOrderDetail) =>
+      client<kanbanOrderDetail>(`/kanban-board/order/${order.orderId}`, {
+        method: 'PUT',
+        data: order
+      }),
+    {
+      onError: (error) => console.log(error),
+      onSettled: (order) => console.log(order)
+    }
+  );
 }
 
 export {

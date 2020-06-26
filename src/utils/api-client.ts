@@ -18,8 +18,12 @@ async function client<T>(
   };
   console.log('passed data:', JSON.stringify(data));
   return fetch(`${BASE_URL}${endpoint}`, config).then(async (response) => {
-    const data = await response.json();
-    console.log('api client:', data);
+    console.log('response:', response);
+    const data = await response
+      .clone()
+      .json()
+      .catch(() => response.text());
+
     if (response.ok) {
       return data;
     } else {

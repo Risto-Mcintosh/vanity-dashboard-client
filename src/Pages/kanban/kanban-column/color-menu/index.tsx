@@ -7,7 +7,6 @@ import {
   Box,
   MenuItem
 } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
 import { useColumnContext } from '../column-context';
 import { useKanbanColumnUpdate } from '../../../../utils/kanban';
 import colors from './colors';
