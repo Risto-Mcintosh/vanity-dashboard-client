@@ -3,11 +3,25 @@ import { useQuery, useMutation, queryCache } from 'react-query';
 import { loadingOrder } from './order-placeholder';
 import * as orderClient from './order-client';
 import * as queryKey from './queryKeys';
+import { client } from './api-client';
+
+function getOrder(orderId: number) {
+  const inCache = queryCache.getQueryData<Order[]>(queryKey.ORDERS);
+
+  const orderInCache = inCache?.find((order) => order.id === orderId);
+
+  if (orderInCache) {
+    return Promise.resolve(orderInCache);
+  }
+  // TODO seed DB
+  return orderClient.read(orderId).then((data) => data);
+  // client<Order>(`/orders/${orderId}`);
+}
 
 function useOrder(orderId: number) {
   const { data, ...results } = useQuery({
     queryKey: queryKey.ORDER,
-    queryFn: () => orderClient.read(orderId).then((data) => data)
+    queryFn: () => getOrder(orderId)
   });
   return { ...results, order: data ?? loadingOrder };
 }
