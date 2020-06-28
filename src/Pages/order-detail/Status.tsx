@@ -5,6 +5,8 @@ import formatDate from '../../utils/formatDate';
 import { MutationOptions } from 'react-query';
 import OrderStatusIcon from './OrderStatusIcon';
 import DatePicker from '../../Components/DatePicker';
+import useContrastText from '../../utils/useContrastText';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,6 +24,42 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+type BuildStatusProps = {
+  status: { color: string; name: string };
+};
+
+function BuildStatus({ status }: BuildStatusProps) {
+  const bgColor = status.color ?? '#fff';
+  const history = useHistory();
+  return (
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      flexDirection="column"
+      pb={2}
+    >
+      <Typography variant="h6"> Build Status </Typography>
+      <Box
+        onClick={() => history.push('/kanban')}
+        bgcolor={bgColor}
+        py={2}
+        px={5}
+        borderRadius={2}
+        boxShadow={2}
+        fontSize="1.2rem"
+        fontWeight="bold"
+        fontStyle="italic"
+        letterSpacing={2}
+        color={useContrastText(bgColor)}
+        style={{ cursor: 'pointer' }}
+      >
+        {status.name}
+      </Box>
+    </Box>
+  );
+}
+
 type props = {
   order: Order;
   mutateOrder: (
@@ -32,7 +70,7 @@ type props = {
 
 function Status({ order, mutateOrder }: props) {
   const classes = useStyles();
-
+  const hasDueDate = !!order.meta.dueOn;
   return (
     <Card className={classes.root}>
       <Box px={2} display="flex" alignItems="center">
@@ -42,12 +80,16 @@ function Status({ order, mutateOrder }: props) {
           className={classes.orderStatus}
           variant="h6"
         >
-          {`Order Status - ${order.orderStatus}`}
+          {order.orderStatus}
         </Typography>
       </Box>
-      <Box display="flex" justifyContent="center" px={2} py={3}>
-        <DatePicker order={order} mutateOrder={mutateOrder} />
-      </Box>
+      {hasDueDate ? (
+        <BuildStatus status={order.meta.buildStatus} />
+      ) : (
+        <Box display="flex" justifyContent="center" px={2} py={3}>
+          <DatePicker order={order} mutateOrder={mutateOrder} />
+        </Box>
+      )}
 
       <Divider />
       <Box p={2} pb={0} display="flex" justifyContent="space-evenly">

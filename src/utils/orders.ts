@@ -13,9 +13,7 @@ function getOrder(orderId: number) {
   if (orderInCache) {
     return Promise.resolve(orderInCache);
   }
-  // TODO seed DB
-  return orderClient.read(orderId).then((data) => data);
-  // client<Order>(`/orders/${orderId}`);
+  return client<Order>(`/orders/${orderId}`);
 }
 
 function useOrder(orderId: number) {

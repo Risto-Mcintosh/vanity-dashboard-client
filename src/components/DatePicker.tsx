@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   MuiPickersUtilsProvider,
-  KeyboardDatePicker,
+  KeyboardDatePicker
 } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 import { Order } from '../types';
@@ -34,7 +34,10 @@ function DatePicker({ order, mutateOrder }: props) {
           format="DD MMM YYYY"
           disabled={order.orderStatus === 'New'}
           onAccept={(date) =>
-            mutateOrder({ ...order, meta: { dueOn: date?.toDate() } })
+            mutateOrder({
+              ...order,
+              meta: { ...order.meta, dueOn: date?.toDate() ?? null }
+            })
           }
         />
       </MuiPickersUtilsProvider>

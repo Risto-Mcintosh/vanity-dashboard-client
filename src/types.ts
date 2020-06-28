@@ -26,11 +26,11 @@ export type Vanity = {
 };
 
 export type Meta = {
-  paidOn?: Date | null;
-  dueOn?: Date | null;
-  completedOn?: Date | null;
-  buildStatus?: {
-    kanbanColumnName: string;
+  paidOn: Date | null;
+  dueOn: Date | null;
+  completedOn: Date | null;
+  buildStatus: {
+    name: string;
     color: string;
   };
 };
