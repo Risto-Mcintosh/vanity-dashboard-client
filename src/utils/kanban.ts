@@ -135,7 +135,9 @@ function useKanbanPositionUpdate() {
       }),
     {
       onError: (error) => console.log(error),
-      onSettled: (order) => console.log(order)
+      onSettled: (order) => {
+        queryCache.removeQueries(queryKey.ORDERS);
+      }
     }
   );
 }

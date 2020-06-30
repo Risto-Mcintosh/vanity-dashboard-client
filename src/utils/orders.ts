@@ -34,11 +34,19 @@ function onUpdateMutate(order: Order) {
 
 function useUpdateOrder() {
   return useMutation(
-    (newOrder: Order) => orderClient.update(newOrder).then((data) => data),
+    (newOrder: Order) =>
+      client<Order>(`/orders/${newOrder.id}`, {
+        method: 'Put',
+        data: newOrder
+      }),
     {
       onMutate: onUpdateMutate,
       onError: (error, order, snapshotValue) => {
         queryCache.setQueryData(queryKey.ORDER, snapshotValue);
+      },
+      onSettled: (newOrder) => {
+        console.log('UseUpdateOrder: ', newOrder);
+        queryCache.setQueryData(queryKey.ORDER, newOrder);
       }
     }
   );
@@ -47,7 +55,7 @@ function useUpdateOrder() {
 function useListOrders(query = '') {
   const { data, ...results } = useQuery({
     queryKey: queryKey.ORDERS,
-    queryFn: () => orderClient.list(query)
+    queryFn: () => client<Order[]>('/orders')
   });
   return { ...results, orders: data ?? [loadingOrder] };
 }

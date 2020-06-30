@@ -6,7 +6,7 @@ import {
   makeStyles,
   Button,
   Box,
-  Divider,
+  Divider
 } from '@material-ui/core';
 import { Order } from '../../types';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
@@ -17,23 +17,23 @@ import { MutationOptions } from 'react-query';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    padding: `${theme.spacing(2)}px 0`,
+    padding: `${theme.spacing(2)}px 0`
   },
   success: {
-    color: theme.palette.success.main,
+    color: theme.palette.success.main
   },
   paidLabel: {
-    marginLeft: theme.spacing(1),
+    marginLeft: theme.spacing(1)
   },
   orderTotal: {
-    fontSize: '1.3em',
+    fontSize: '1.3em'
   },
   space: {
-    padding: `${theme.spacing(1.5)}px 0`,
+    padding: `${theme.spacing(1.5)}px 0`
   },
   button: {
-    marginLeft: theme.spacing(1),
-  },
+    marginLeft: theme.spacing(1)
+  }
 }));
 
 type props = {
@@ -98,7 +98,13 @@ function OrderInfo({ order, mutateOrder }: props) {
           variant="contained"
           className={classes.button}
           disabled={order.orderStatus !== 'New' ? true : false}
-          onClick={() => mutateOrder({ ...order, orderStatus: 'Pending' })}
+          onClick={() =>
+            mutateOrder({
+              ...order,
+              orderStatus: 'Paid',
+              meta: { ...order.meta, paidOn: new Date() }
+            })
+          }
         >
           Mark As Paid
         </Button>
