@@ -1,5 +1,6 @@
 import React from 'react';
 import Navigation from './Navigation';
+import CreateNewOrder from './CreateNewOrder';
 import pageName from '../utils/pageName';
 import {
   CssBaseline,
@@ -10,10 +11,10 @@ import {
   Drawer,
   Hidden,
   Container,
+  IconButton,
   styled,
   Theme
 } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useLocation } from 'react-router-dom';
 
@@ -103,7 +104,7 @@ function Layout({ children }: props) {
     <div className={classes.root}>
       <CssBaseline />
       <AppBar position="fixed" className={classes.appBar}>
-        <Toolbar>
+        <Toolbar style={{ justifyContent: 'space-between' }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -116,6 +117,7 @@ function Layout({ children }: props) {
           <Typography variant="h6" noWrap>
             {pageName(pathname)}
           </Typography>
+          <CreateNewOrder />
         </Toolbar>
       </AppBar>
       <nav className={classes.drawer}>
