@@ -1,9 +1,9 @@
 import React from 'react';
 import OrdersTable from '../../Components/order-table';
-import { useListOrders } from '../../utils/orders';
+import { useOrderList } from '../../utils/orders';
 
 function Orders() {
-  const { orders } = useListOrders();
+  const { orders } = useOrderList();
 
   return (
     <div>

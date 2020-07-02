@@ -10,7 +10,7 @@ type props = {
 
 const KanbanItems = ({ order, index }: props) => (
   <ItemContainer
-    orderId={order.orderId}
+    order={order}
     index={index}
     render={(provided, isDragging) => (
       <KanbanItem order={order} isDragging={isDragging} provided={provided} />

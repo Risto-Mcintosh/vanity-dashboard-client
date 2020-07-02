@@ -3,13 +3,13 @@ import { Grid, Container } from '@material-ui/core';
 import OrderInfo from './Info';
 import CustomerInfo from './CustomerInfo';
 import OrderStatus from './Status';
-import { useOrder, useUpdateOrder } from '../../utils/orders';
+import { useOrder, useOrderUpdate } from '../../utils/orders';
 import { useParams } from 'react-router-dom';
 
 export default function OrderDetail() {
   const { orderId } = useParams<{ orderId: string }>();
   const { order } = useOrder(parseInt(orderId));
-  const [mutate] = useUpdateOrder();
+  const [mutate] = useOrderUpdate();
 
   const childProps = {
     order,

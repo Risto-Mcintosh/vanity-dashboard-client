@@ -6,8 +6,10 @@ import {
   useKanbanColumnOrderUpdate,
   useKanbanPositionUpdate
 } from '../../utils/kanban';
-import { kanbanDataMap } from '../../types';
+import { kanbanDataMap, Order } from '../../types';
 import AddNewColumn from './AddNewColumn';
+import { useOrderUpdate } from '../../utils/orders';
+import { MutationFunction } from 'react-query';
 
 type props = {
   kanbanData: kanbanDataMap;
@@ -15,10 +17,6 @@ type props = {
 };
 
 const Container = styled('div')(({ theme }) => ({
-  // display: 'grid',
-  // gridTemplateColumns: 'repeat(auto-fit, 200px)',
-  // gridColumnGap: '25px',
-  // gridAutoFlow: 'column',
   overflowX: 'auto',
   display: 'flex',
   alignItems: 'flex-start',
@@ -32,9 +30,11 @@ export default function KanbanContainer({ kanbanData, children }: props) {
   function onDragEnd(result: DropResult) {
     if (!result.destination) return;
 
-    // TODO add updateColumnOrder and updateOrder functions
     const _DragNDrop = new DragNDrop({
-      updateFn: { columnOrder, orderPosition },
+      updateFn: {
+        columnOrder,
+        orderPosition
+      },
       ...result,
       ...kanbanData
     });

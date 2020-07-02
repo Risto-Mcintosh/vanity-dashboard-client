@@ -1,12 +1,18 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { DropResult, DraggableLocation } from 'react-beautiful-dnd';
-import { kanbanDataMap, kanbanColumn, kanbanOrderDetail } from '../../types';
+import {
+  kanbanDataMap,
+  kanbanColumn,
+  kanbanOrderDetail,
+  Order
+} from '../../types';
 import { MutationFunction, queryCache } from 'react-query';
 import * as queryKey from '../../utils/queryKeys';
+import { KanbanOrderUpdateFn } from '../../utils/kanban';
 
 type updateFunctions = {
   columnOrder: MutationFunction<string[], string[]>;
-  orderPosition: MutationFunction<kanbanOrderDetail, kanbanOrderDetail>;
+  orderPosition: MutationFunction<kanbanOrderDetail, KanbanOrderUpdateFn>;
 };
 
 export default class DragNDrop {
@@ -102,7 +108,15 @@ export default class DragNDrop {
 
     queryCache.setQueryData(queryKey.KANBAN_DATA, {
       ...this.data,
-      orders: { ...this.data.orders, [movedOrder.orderId]: movedOrder },
+      orders: {
+        ...this.data.orders,
+        [movedOrder.orderId]: {
+          ...movedOrder,
+          orderStatus: newFinishColumn.isCompleteColumn
+            ? 'Complete'
+            : movedOrder.orderStatus
+        }
+      },
       columns: {
         ...this.data.columns,
         [newStartColumn.columnId]: newStartColumn,
@@ -110,6 +124,16 @@ export default class DragNDrop {
       }
     });
 
-    this.updateFn.orderPosition(movedOrder);
+    if (newFinishColumn.isCompleteColumn) {
+      this.updateFn.orderPosition({
+        order: movedOrder,
+        queryAction: 'markAsComplete'
+      });
+    } else {
+      this.updateFn.orderPosition({
+        order: movedOrder,
+        queryAction: 'position'
+      });
+    }
   }
 }

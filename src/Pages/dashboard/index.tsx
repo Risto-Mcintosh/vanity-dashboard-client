@@ -3,17 +3,17 @@ import WeeklyOrders from '../../Components/weekly-orders';
 import { makeStyles } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
 import OrdersTable from '../../Components/order-table';
-import { useListOrders } from '../../utils/orders';
+import { useOrderList } from '../../utils/orders';
 
 const useStyles = makeStyles({
   root: {
-    height: '100%',
-  },
+    height: '100%'
+  }
 });
 
 function Dashboard() {
   const classes = useStyles();
-  const { orders } = useListOrders('recent');
+  const { orders } = useOrderList('recent');
   return (
     <Grid
       className={classes.root}

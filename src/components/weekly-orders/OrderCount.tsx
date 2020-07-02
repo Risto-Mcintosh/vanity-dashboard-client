@@ -1,5 +1,5 @@
 import React from 'react';
-import { useListOrders } from '../../utils/orders';
+import { useOrderList } from '../../utils/orders';
 import weeklyOrders, { daysOfTheWeek } from './mapWeeklyOrders';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
@@ -15,13 +15,13 @@ const useStyles = makeStyles((theme) => ({
     transition: theme.transitions.create('all'),
     cursor: 'pointer',
     '&:hover': {
-      backgroundColor: theme.palette.secondary.light,
-    },
-  },
+      backgroundColor: theme.palette.secondary.light
+    }
+  }
 }));
 
 function OrderCount({ setSelected }: props) {
-  const mappedOrders = weeklyOrders.map(useListOrders('ordersDue').orders);
+  const mappedOrders = weeklyOrders.map(useOrderList('ordersDue').orders);
   const classes = useStyles();
   return (
     <TableRow>

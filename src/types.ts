@@ -5,7 +5,7 @@ export type OrderStatus = 'New' | 'Pending' | 'Paid' | 'Complete';
 export type VanityColor = 'White' | 'Black' | 'Pink';
 
 export type Customer = {
-  id: number | string;
+  id?: number | string;
   name: string;
   phone: string;
   email: string;
@@ -20,9 +20,9 @@ export type VanityComponent = {
 
 export type Vanity = {
   color: VanityColor;
-  mirror: VanityComponent;
-  table: VanityComponent;
-  baseMaterial: VanityComponent;
+  mirror: VanityComponent | Partial<VanityComponent>;
+  table: VanityComponent | Partial<VanityComponent>;
+  baseMaterial: VanityComponent | Partial<VanityComponent>;
 };
 
 export type Meta = {
@@ -36,7 +36,7 @@ export type Meta = {
 };
 
 export type Order = {
-  id: number;
+  id: number | string;
   customer: Customer;
   vanity: Vanity;
   total: number;
@@ -49,7 +49,7 @@ export type kanbanOrderDetail = {
   orderId: string;
   customerName: string;
   dueOn: Date | string | null;
-  orderStatus: string;
+  orderStatus: OrderStatus;
   kanbanColumnId: string;
   priority: number;
 };

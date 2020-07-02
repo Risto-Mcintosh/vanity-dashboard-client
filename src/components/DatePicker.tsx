@@ -36,6 +36,7 @@ function DatePicker({ order, mutateOrder }: props) {
           onAccept={(date) =>
             mutateOrder({
               ...order,
+              orderStatus: 'Pending',
               meta: { ...order.meta, dueOn: date?.toDate() ?? null }
             })
           }

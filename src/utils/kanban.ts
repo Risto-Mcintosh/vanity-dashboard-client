@@ -126,16 +126,24 @@ function useKanbanColumnDelete() {
   );
 }
 
+export type KanbanOrderUpdateFn = {
+  order: kanbanOrderDetail;
+  queryAction: 'position' | 'markAsComplete';
+};
+
 function useKanbanPositionUpdate() {
-  return useMutation(
-    (order: kanbanOrderDetail) =>
-      client<kanbanOrderDetail>(`/kanban-board/order/${order.orderId}`, {
-        method: 'PUT',
-        data: order
-      }),
+  return useMutation<kanbanOrderDetail, KanbanOrderUpdateFn>(
+    ({ order, queryAction }) =>
+      client<kanbanOrderDetail>(
+        `/kanban-board/order/${order.orderId}?action=${queryAction}`,
+        {
+          method: 'PUT',
+          data: order
+        }
+      ),
     {
       onError: (error) => console.log(error),
-      onSettled: (order) => {
+      onSettled: () => {
         queryCache.removeQueries(queryKey.ORDERS);
       }
     }

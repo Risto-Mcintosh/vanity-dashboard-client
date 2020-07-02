@@ -73,7 +73,7 @@ jest.mock('../../utils/orders.ts', () => {
   return {
     getOrder: jest.fn(() => order1),
     useOrder: jest.fn(() => ({ order: order1, error: '' })),
-    useUpdateOrder: jest.fn(() => [mutate])
+    useOrderUpdate: jest.fn(() => [mutate])
   };
 });
 
