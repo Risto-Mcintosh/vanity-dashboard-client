@@ -13,7 +13,7 @@ const useStyles = makeStyles({
 
 function Dashboard() {
   const classes = useStyles();
-  const { orders } = useOrderList('recent');
+  const { orders } = useOrderList();
   return (
     <Grid
       className={classes.root}

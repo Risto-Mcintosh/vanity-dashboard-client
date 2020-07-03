@@ -41,7 +41,7 @@ function useKanbanColumnUpdate() {
       onMutate: onColumnUpdate,
       onError: (error, column, snapshotValue) =>
         queryCache.setQueryData(queryKey.KANBAN_DATA, snapshotValue),
-      onSettled: () => queryCache.refetchQueries(queryKey.KANBAN_DATA)
+      onSettled: () => queryCache.invalidateQueries(queryKey.KANBAN_DATA)
     }
   );
 }
@@ -121,7 +121,7 @@ function useKanbanColumnDelete() {
       onMutate: onDeleteColumn,
       onError: (error, columnId, snapshotValue) =>
         queryCache.setQueryData(queryKey.KANBAN_DATA, snapshotValue),
-      onSettled: () => queryCache.refetchQueries(queryKey.KANBAN_DATA)
+      onSettled: () => queryCache.invalidateQueries(queryKey.KANBAN_DATA)
     }
   );
 }

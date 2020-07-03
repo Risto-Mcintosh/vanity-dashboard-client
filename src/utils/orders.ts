@@ -51,10 +51,21 @@ function useOrderUpdate() {
   );
 }
 
-function useOrderList(query = '') {
+type OrderQueryParams = Record<string, string> | '';
+
+function setQueryParam(queries: OrderQueryParams) {
+  if (!queries) return;
+  Object.keys(queries).forEach((key) =>
+    queries[key] === '' ? delete queries[key] : {}
+  );
+  console.log(new URLSearchParams(queries).toString());
+  return `?${new URLSearchParams(queries).toString()}`;
+}
+
+function useOrderList(query: OrderQueryParams = '') {
   const { data, ...results } = useQuery({
     queryKey: queryKey.ORDERS,
-    queryFn: () => client<Order[]>('/orders')
+    queryFn: () => client<Order[]>(`/orders${setQueryParam(query)}`)
   });
   return { ...results, orders: data ?? [loadingOrder] };
 }
@@ -63,7 +74,7 @@ function useOrderCreate() {
   return useMutation(
     (newOrder: Partial<Order>) => client<Order>('/orders', { data: newOrder }),
     {
-      onSuccess: () => queryCache.refetchQueries(queryKey.ORDERS)
+      onSuccess: () => queryCache.invalidateQueries(queryKey.ORDERS)
     }
   );
 }

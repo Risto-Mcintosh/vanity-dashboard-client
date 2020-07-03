@@ -5,8 +5,10 @@ import KanbanContainer from './KanbanContainer';
 import KanbanItems from './kanban-item';
 
 export default function Kanban() {
-  const { data } = useKanbanData();
-  if (!data) return <h1>Loading...</h1>;
+  const { data, isLoading } = useKanbanData();
+
+  if (isLoading || !data) return <h1>Loading...</h1>;
+
   return (
     <KanbanContainer kanbanData={data}>
       {data.columnOrder.map((columnId, index) => {

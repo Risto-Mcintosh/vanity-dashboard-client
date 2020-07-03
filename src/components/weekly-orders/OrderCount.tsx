@@ -21,15 +21,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function OrderCount({ setSelected }: props) {
-  const mappedOrders = weeklyOrders.map(useOrderList('ordersDue').orders);
+  const mappedOrders = weeklyOrders.map(useOrderList({ limit: '24' }).orders);
   const classes = useStyles();
   return (
     <TableRow>
-      {daysOfTheWeek.map((day) => {
+      {daysOfTheWeek.map((day, i) => {
         const orderCount = mappedOrders[day] ? mappedOrders[day].length : 0;
         return (
           <TableCell
-            key={day}
+            key={i}
             onClick={() => setSelected(mappedOrders[day])}
             align="center"
             className={classes.cell}

@@ -48,7 +48,7 @@ function useUpdateProduct() {
       onMutate: onProductUpdate,
       onError: (error, newProduct, snapshotValue) =>
         queryCache.setQueryData(queryKey.PRODUCTS, snapshotValue),
-      onSettled: () => queryCache.refetchQueries(queryKey.PRODUCTS)
+      onSettled: () => queryCache.invalidateQueries(queryKey.PRODUCTS)
     }
   );
 }
