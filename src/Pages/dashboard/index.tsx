@@ -13,7 +13,11 @@ const useStyles = makeStyles({
 
 function Dashboard() {
   const classes = useStyles();
-  const { orders } = useOrderList();
+  const { orders: recentOrders } = useOrderList({ limit: '10' });
+  const { orders: ordersDueThisWeek } = useOrderList(
+    { thisWeek: 'true' },
+    { refetchOnWindowFocus: false }
+  );
   return (
     <Grid
       className={classes.root}
@@ -21,8 +25,8 @@ function Dashboard() {
       direction="column"
       justify="space-evenly"
     >
-      <WeeklyOrders />
-      <OrdersTable tableTitle="Recent Orders" orders={orders} />
+      <WeeklyOrders orders={ordersDueThisWeek} />
+      <OrdersTable tableTitle="Recent Orders" orders={recentOrders} />
     </Grid>
   );
 }

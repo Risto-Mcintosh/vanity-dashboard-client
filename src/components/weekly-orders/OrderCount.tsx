@@ -1,6 +1,5 @@
 import React from 'react';
-import { useOrderList } from '../../utils/orders';
-import weeklyOrders, { daysOfTheWeek } from './mapWeeklyOrders';
+import { daysOfTheWeek, ordersMapByDayOfTheWeek } from './mapWeeklyOrders';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import { Order } from '../../types';
@@ -8,6 +7,7 @@ import { makeStyles } from '@material-ui/core';
 
 type props = {
   setSelected: React.Dispatch<React.SetStateAction<Order[] | null>>;
+  mappedOrders: ordersMapByDayOfTheWeek;
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -20,8 +20,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function OrderCount({ setSelected }: props) {
-  const mappedOrders = weeklyOrders.map(useOrderList({ limit: '24' }).orders);
+function OrderCount({ setSelected, mappedOrders }: props) {
   const classes = useStyles();
   return (
     <TableRow>

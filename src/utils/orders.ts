@@ -1,5 +1,5 @@
 import { Order } from '../types';
-import { useQuery, useMutation, queryCache } from 'react-query';
+import { useQuery, useMutation, queryCache, QueryOptions } from 'react-query';
 import { loadingOrder } from './order-placeholder';
 import * as queryKey from './queryKeys';
 import { client } from './api-client';
@@ -54,7 +54,7 @@ function useOrderUpdate() {
 type OrderQueryParams = Record<string, string> | '';
 
 function setQueryParam(queries: OrderQueryParams) {
-  if (!queries) return;
+  if (!queries) return '';
   Object.keys(queries).forEach((key) =>
     queries[key] === '' ? delete queries[key] : {}
   );
@@ -62,10 +62,17 @@ function setQueryParam(queries: OrderQueryParams) {
   return `?${new URLSearchParams(queries).toString()}`;
 }
 
-function useOrderList(query: OrderQueryParams = '') {
+function useOrderList(
+  query: OrderQueryParams = '',
+  queryConfig: QueryOptions<Order[]> = {}
+) {
+  console.log('called with:', [queryKey.ORDERS, query]);
   const { data, ...results } = useQuery({
-    queryKey: queryKey.ORDERS,
-    queryFn: () => client<Order[]>(`/orders${setQueryParam(query)}`)
+    queryKey: [queryKey.ORDERS, query],
+    queryFn: () => client<Order[]>(`/orders${setQueryParam(query)}`),
+    config: {
+      ...queryConfig
+    }
   });
   return { ...results, orders: data ?? [loadingOrder] };
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { daysOfTheWeek } from './mapWeeklyOrders';
+import mapOrdersByDay, { daysOfTheWeek } from './mapWeeklyOrders';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -15,11 +15,15 @@ import OrdersTable from '../order-table';
 const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(2),
-    marginBottom: theme.spacing(4),
-  },
+    marginBottom: theme.spacing(4)
+  }
 }));
 
-export default function WeeklyOrders() {
+type props = {
+  orders: Order[];
+};
+
+export default function WeeklyOrders({ orders }: props) {
   const classes = useStyles();
 
   const [selected, setSelected] = React.useState<Order[] | null>(null);
@@ -40,7 +44,10 @@ export default function WeeklyOrders() {
           </TableRow>
         </TableHead>
         <TableBody>
-          <OrderCount setSelected={setSelected} />
+          <OrderCount
+            mappedOrders={mapOrdersByDay(orders)}
+            setSelected={setSelected}
+          />
         </TableBody>
       </Table>
       {selected && (

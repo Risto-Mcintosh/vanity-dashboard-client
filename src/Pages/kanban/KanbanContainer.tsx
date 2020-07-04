@@ -6,10 +6,8 @@ import {
   useKanbanColumnOrderUpdate,
   useKanbanPositionUpdate
 } from '../../utils/kanban';
-import { kanbanDataMap, Order } from '../../types';
+import { kanbanDataMap } from '../../types';
 import AddNewColumn from './AddNewColumn';
-import { useOrderUpdate } from '../../utils/orders';
-import { MutationFunction } from 'react-query';
 
 type props = {
   kanbanData: kanbanDataMap;
