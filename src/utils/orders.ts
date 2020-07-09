@@ -1,13 +1,28 @@
 import { Order } from '../types';
-import { useQuery, useMutation, queryCache, QueryOptions } from 'react-query';
-import { loadingOrder } from './order-placeholder';
+import {
+  useQuery,
+  useMutation,
+  queryCache,
+  QueryOptions,
+  usePaginatedQuery
+} from 'react-query';
+import { loadingOrder, loadingPageData } from './order-placeholder';
 import * as queryKey from './queryKeys';
-import { client } from './api-client';
+import { client, PaginationData } from './api-client';
 
 function getOrder(orderId: number) {
-  const inCache = queryCache.getQueryData<Order[]>(queryKey.ORDERS);
+  const inCache = queryCache.getQueryData<Order[] | { data: Order[] }>(
+    queryKey.ORDERS
+  );
 
-  const orderInCache = inCache?.find((order) => order.id === orderId);
+  let orderInCache;
+  if (!inCache) {
+    orderInCache = null;
+  } else if (Array.isArray(inCache)) {
+    orderInCache = inCache.find((order) => order.id === orderId);
+  } else {
+    orderInCache = inCache.data.find((order) => order.id === orderId);
+  }
 
   if (orderInCache) {
     return Promise.resolve(orderInCache);
@@ -66,7 +81,6 @@ function useOrderList(
   query: OrderQueryParams = '',
   queryConfig: QueryOptions<Order[]> = {}
 ) {
-  console.log('called with:', [queryKey.ORDERS, query]);
   const { data, ...results } = useQuery({
     queryKey: [queryKey.ORDERS, query],
     queryFn: () => client<Order[]>(`/orders${setQueryParam(query)}`),
@@ -86,4 +100,34 @@ function useOrderCreate() {
   );
 }
 
-export { useOrder, useOrderUpdate, useOrderList, useOrderCreate };
+function useOrderListPaginated(query: OrderQueryParams = '') {
+  const { resolvedData, ...rest } = usePaginatedQuery({
+    queryKey: [queryKey.ORDERS, query],
+    queryFn: () =>
+      client<{ data: Order[]; pageData: PaginationData }>(
+        `/orders${setQueryParam(query)}`,
+        {
+          includePageData: true
+        }
+      ),
+    config: {
+      refetchOnWindowFocus: false
+    }
+  });
+
+  return {
+    ...rest,
+    resolvedData: resolvedData ?? {
+      data: [loadingOrder],
+      pageData: loadingPageData
+    }
+  };
+}
+
+export {
+  useOrder,
+  useOrderUpdate,
+  useOrderList,
+  useOrderCreate,
+  useOrderListPaginated
+};
