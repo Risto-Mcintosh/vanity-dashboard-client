@@ -81,7 +81,7 @@ function Status({ order, mutateOrder }: props) {
           variant="h6"
         >
           {order.orderStatus === 'Paid'
-            ? 'Need to set set due date!'
+            ? 'Need to set a due date!'
             : order.orderStatus}
         </Typography>
       </Box>

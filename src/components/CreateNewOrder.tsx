@@ -194,7 +194,7 @@ export default function CreateNewOrder() {
             Cancel
           </Button>
           <Button onClick={handleSubmit} color="primary">
-            Subscribe
+            Create Order
           </Button>
         </DialogActions>
       </Dialog>
