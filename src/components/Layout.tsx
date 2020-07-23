@@ -17,6 +17,7 @@ import {
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useLocation } from 'react-router-dom';
+import Search from './Search';
 
 const drawerWidth = 200;
 
@@ -117,6 +118,7 @@ function Layout({ children }: props) {
           <Typography variant="h6" noWrap>
             {pageName(pathname)}
           </Typography>
+          {pathname !== '/orders' && <Search />}
           <CreateNewOrder />
         </Toolbar>
       </AppBar>
