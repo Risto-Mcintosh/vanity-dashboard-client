@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
 import OrdersTable from '../../Components/order-table/';
 import { useOrderList } from '../../utils/orders';
+import Overview from '../../Components/Overview';
 
 const useStyles = makeStyles({
   root: {
@@ -25,6 +26,7 @@ function Dashboard() {
       direction="column"
       justify="space-evenly"
     >
+      <Overview />
       <WeeklyOrders orders={ordersDueThisWeek} />
       <OrdersTable tableTitle="Recent Orders" orders={recentOrders} />
     </Grid>
