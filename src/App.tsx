@@ -10,8 +10,6 @@ import Kanban from './Pages/kanban';
 import OrderDetail from './Pages/order-detail';
 import './app.css';
 
-const Reports = () => <h1 style={{ marginTop: '64px' }}>Reports</h1>;
-
 function App() {
   return (
     <ThemeProvider theme={theme}>
@@ -22,7 +20,6 @@ function App() {
           <Route path="/orders/:orderId" component={OrderDetail} />
           <Route path="/products" component={Products} />
           <Route path="/kanban" component={Kanban} />
-          <Route path="/reports" component={Reports} />
         </Layout>
       </Router>
     </ThemeProvider>
