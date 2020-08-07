@@ -38,10 +38,6 @@ async function client<T>(
       pageData = JSON.parse(pageHeader) as PaginationData;
     }
 
-    console.log('response: ', {
-      response,
-      data
-    });
     if (response.ok) {
       return customConfig.includePageData ? { data, pageData } : data;
     } else {

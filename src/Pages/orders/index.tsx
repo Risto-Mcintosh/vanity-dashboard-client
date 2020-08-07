@@ -8,6 +8,7 @@ import { useLocation } from 'react-router-dom';
 
 type LocationState = {
   searchTerm: string;
+  listType: string;
 };
 
 function Orders() {
@@ -20,6 +21,7 @@ function Orders() {
   const { resolvedData } = useOrderListPaginated({
     limit: '15',
     pageNumber: pageNumber.toString(),
+    listType: locationState?.listType ?? '',
     searchString
   });
 

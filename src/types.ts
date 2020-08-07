@@ -70,3 +70,9 @@ export type kanbanDataMap = {
   orders: { [key: string]: kanbanOrderDetail };
   columnOrder: string[];
 };
+
+export type OrderOverview = {
+  pendingOrders: number;
+  newOrders: number;
+  overDueOrders: number;
+};

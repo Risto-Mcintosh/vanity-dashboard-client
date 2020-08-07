@@ -12,7 +12,6 @@ type props = {
 };
 
 export default function ItemContainer({ order, index, render }: props) {
-  console.log('isDragDisabled:', order.orderStatus === 'Complete', { order });
   return (
     <Draggable
       draggableId={order.orderId}

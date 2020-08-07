@@ -47,13 +47,9 @@ export default function CreateNewOrder() {
   const [nameError, setNameError] = React.useState('');
   const [phoneError, setPhoneError] = React.useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const handleClickOpen = () => setOpen(true);
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const handleClose = () => setOpen(false);
 
   const clearErrors = () => {
     setEmailError('');

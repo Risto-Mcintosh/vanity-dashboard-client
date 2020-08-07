@@ -50,8 +50,6 @@ export default function OrderTable({
     Need to add 1 here because the page number set in the
     TablePagination component zero index
     */
-    console.log('page change', page);
-
     paginatedData?.setPageFn(page + 1);
   }
   return (

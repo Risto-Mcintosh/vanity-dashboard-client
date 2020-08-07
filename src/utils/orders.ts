@@ -59,7 +59,6 @@ function useOrderUpdate() {
         queryCache.setQueryData(queryKey.ORDER, snapshotValue);
       },
       onSettled: (newOrder) => {
-        console.log('useOrderUpdate: ', newOrder);
         queryCache.setQueryData(queryKey.ORDER, newOrder);
       }
     }
@@ -73,7 +72,6 @@ function setQueryParam(queries: OrderQueryParams) {
   Object.keys(queries).forEach((key) =>
     queries[key] === '' ? delete queries[key] : {}
   );
-  console.log(new URLSearchParams(queries).toString());
   return `?${new URLSearchParams(queries).toString()}`;
 }
 
@@ -94,6 +92,15 @@ function useOrderList(
 function useOrderCreate() {
   return useMutation(
     (newOrder: Partial<Order>) => client<Order>('/orders', { data: newOrder }),
+    {
+      onSuccess: () => queryCache.invalidateQueries(queryKey.ORDERS)
+    }
+  );
+}
+
+function useOrderDelete() {
+  return useMutation(
+    (orderId: string) => client(`/orders/${orderId}`, { method: 'DELETE' }),
     {
       onSuccess: () => queryCache.invalidateQueries(queryKey.ORDERS)
     }
@@ -129,5 +136,6 @@ export {
   useOrderUpdate,
   useOrderList,
   useOrderCreate,
+  useOrderDelete,
   useOrderListPaginated
 };

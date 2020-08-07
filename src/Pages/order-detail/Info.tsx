@@ -90,9 +90,6 @@ function OrderInfo({ order, mutateOrder }: props) {
       </Grid>
       <Divider />
       <Box p={2} pb={0} display="flex" justifyContent="flex-end">
-        <Button color="default" variant="contained">
-          Send Invoice
-        </Button>
         <Button
           color="secondary"
           variant="contained"

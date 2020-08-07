@@ -9,7 +9,6 @@ type props = {
   orderStatus: OrderStatus;
 };
 function OrderStatusIcon({ orderStatus }: props) {
-  console.log('orderStatus', orderStatus);
   switch (orderStatus) {
     case 'New':
       return <FiberNewIcon color="secondary" />;
