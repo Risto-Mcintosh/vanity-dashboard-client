@@ -4,15 +4,14 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
-  makeStyles,
+  makeStyles
 } from '@material-ui/core';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import TableChartIcon from '@material-ui/icons/TableChart';
-import ShowChartIcon from '@material-ui/icons/ShowChart';
 
 const useStyle = makeStyles((theme) => ({
-  toolbar: theme.mixins.toolbar,
+  toolbar: theme.mixins.toolbar
 }));
 
 type props = {
@@ -47,7 +46,6 @@ function Navigation({ setMobileClose }: props) {
       <NavItem href="/orders" name="Orders" icon={<ViewListIcon />} />
       <NavItem href="/products" name="Products" icon={<ViewListIcon />} />
       <NavItem href="/kanban" name="Kanban" icon={<TableChartIcon />} />
-      <NavItem href="/reports" name="Reports" icon={<ShowChartIcon />} />
     </div>
   );
 }
