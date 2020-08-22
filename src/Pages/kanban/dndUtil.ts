@@ -50,7 +50,11 @@ export default class DragNDrop {
 
     const newColumnOrder = [...this.data.columnOrder];
     newColumnOrder.splice(this.source.index, 1);
-    newColumnOrder.splice(this.destination.index, 0, this.draggableId);
+    newColumnOrder.splice(
+      this.destination.index,
+      0,
+      this.draggableId.replace('col-', '')
+    );
 
     queryCache.setQueryData(queryKey.KANBAN_DATA, {
       ...this.data,

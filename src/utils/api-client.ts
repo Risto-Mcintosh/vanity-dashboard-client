@@ -1,4 +1,4 @@
-const BASE_URL = 'http://vanity.ristomcintosh.com/api';
+const BASE_URL = 'https://vanity.ristomcintosh.com/api';
 
 type ClientParams = {
   data?: any;

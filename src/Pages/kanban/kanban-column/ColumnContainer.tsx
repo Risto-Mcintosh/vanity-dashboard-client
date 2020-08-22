@@ -35,7 +35,7 @@ export default function ColumnContainer({ children }: props) {
   const isDragDisabled = column.columnLock || isStartOrEnd;
   return (
     <Draggable
-      draggableId={column.columnId}
+      draggableId={`col-${column.columnId}`}
       index={columnIndex}
       isDragDisabled={isDragDisabled}
     >

@@ -36,7 +36,6 @@ export default function KanbanContainer({ kanbanData, children }: props) {
       ...result,
       ...kanbanData
     });
-
     if (_DragNDrop.inSamePosition()) return;
 
     if (result.type === 'column') {

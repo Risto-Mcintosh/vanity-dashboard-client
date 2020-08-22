@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import { red, blue, green } from '@material-ui/core/colors';
 import { useQuery } from 'react-query';
 import { client } from '../utils/api-client';
